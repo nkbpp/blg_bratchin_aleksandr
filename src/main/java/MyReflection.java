@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
  * @author Александр Братчин
  * @version 1.0
  */
-
 public class MyReflection {
 
     Class<?> aClass;
@@ -24,7 +23,7 @@ public class MyReflection {
      * @return возвращает список методов
      */
     public List<Method> getMethods() {
-            return Arrays.stream(aClass.getDeclaredMethods()).collect(Collectors.toList());
+        return Arrays.stream(aClass.getDeclaredMethods()).collect(Collectors.toList());
     }
 
     /**
@@ -36,7 +35,7 @@ public class MyReflection {
     }
 
     /**
-     *  Метод, создающий экземпляр класса Class через default constructor, если default constructor отсутствует или создать экземпляр не удалось выкинуть run-time исключение.
+     *  Метод, создающий экземпляр класса Class через default constructor, если default constructor отсутствует или создать экземпляр не удалось выкидывает run-time исключение.
      * @return возвращает экземпляр класса Class
      */
     public static Class<?> createAnInstanceOfTheClass(Class<?> cl) {
@@ -74,11 +73,10 @@ public class MyReflection {
         List<Annotation> annotations2 = Arrays.stream(aClass.getAnnotations()).collect(Collectors.toList());
 
         for (Annotation a:
-             annotations) {
+                annotations) {
             String name = a.annotationType().getName();
             if(!annotations2.stream()
-                    .map(annotation -> annotation.annotationType().getName())
-                    .collect(Collectors.toList()).contains(name)){
+                    .map(annotation -> annotation.annotationType().getName()).toList().contains(name)){
                 annotations2.add(a);
             }
         }

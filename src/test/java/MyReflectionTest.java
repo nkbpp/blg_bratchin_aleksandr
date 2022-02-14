@@ -7,7 +7,6 @@ import java.lang.annotation.Target;
 
 import static org.assertj.core.api.Assertions.*;
 
-
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 @interface ParameterIsPresent {
