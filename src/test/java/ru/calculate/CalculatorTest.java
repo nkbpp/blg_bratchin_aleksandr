@@ -4,6 +4,12 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * Тестирование класса Calculator
+ * @author Александр Братчин
+ * @version 1.0
+ */
+
 class CalculatorTest {
 
     @Test
