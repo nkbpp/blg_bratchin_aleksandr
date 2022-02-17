@@ -1,32 +1,29 @@
 package ru.calculate;
 
 /**
- * Разработать класс, который бы вычислял значение выражения по формуле.
- * Само выражение представляет из себя строку вида "<число><знак сложения-вычитания><число>"
- * Примеры, "2+6" "2-6"
- *
+ * #3
  * @author Александр Братчин
- * @version 1.0
+ * @version 2.0
  */
 
 public final class Calculator {
 
     private char[] expression;
-    private int indexOperator;
+
+    /**
+     * Вспомогательный метод вычисляет результат выполнения операции над атрибутами arg1, arg2
+     *
+     * @return возвращает индекс символа
+     */
+    private int evaluateExpression(char c, int arg1, int arg2) {
+        return switch (c) {
+            case '+' -> arg1 + arg2;
+            default -> arg1 - arg2;
+        };
+    }
 
     public Calculator(String expression) {
         this.expression = expression.toCharArray();//единственное место где использовался сторонний метод класса String
-        int minusIndex = indexOf('-');
-        int plusIndex = indexOf('+');
-
-        indexOperator = (minusIndex != -1 && plusIndex != -1) ?
-                minusIndex < plusIndex ? minusIndex : plusIndex :
-                minusIndex > plusIndex ? minusIndex : plusIndex;
-
-        if (indexOperator == -1) {
-            throw new IllegalArgumentException(
-                    String.format("Operation sign not found in string: '%s'! Correct operations are '+' or '-'",expression));
-        }
     }
 
     /**
@@ -35,9 +32,29 @@ public final class Calculator {
      * @return возвращает int значение
      */
     public int calculate() {
-        return getOperator() == '+' ?
-                getArg1() + getArg2() :
-                getArg1() - getArg2();
+        if (expression.length < 3) {
+            throw new IllegalArgumentException("Invalid expression " + expression);
+        }
+
+        int start = 0;
+        int indexOperator = findIndexOperator(expression, start + 1);
+
+        if (indexOperator == -1) {
+            throw new IllegalArgumentException(
+                    String.format("Operation sign not found in string: '%s'! Correct operations are '+' or '-'", expression));
+        }
+
+        int result = getArg(start, indexOperator);
+
+        for (start = indexOperator, indexOperator = findIndexOperator(expression, start + 2);
+             indexOperator != -1; start = indexOperator,
+                     indexOperator = findIndexOperator(expression, start + 2)) {
+            result = evaluateExpression(expression[start], result, getArg(start + 1, indexOperator));
+        }
+
+        result = evaluateExpression(expression[start], result, getArg(start + 1, expression.length));
+
+        return result;
     }
 
     /**
@@ -46,10 +63,14 @@ public final class Calculator {
      *
      * @return возвращает int значение первого числа в выражении
      */
-    private int getArg1() {
+    private int getArg(int start, int end) {
+        if (start >= end) {
+            throw new IllegalArgumentException(
+                    String.format("No numbers found after symbol '%s'!", expression[start - 1])); //TODO тут еще не обработал
+        }
         int arg1 = 0;
-        for (int i = indexOperator - 1, j = 0; i >= 0; i--) {
-            if (i == 0 && expression[i] == '-') {
+        for (int i = end - 1, j = 0; i >= start; i--) {
+            if (i == start && expression[i] == '-') {
                 arg1 *= -1;
             } else {
                 arg1 += (getNumber(i) * degreeOfTen(j++));
@@ -57,6 +78,7 @@ public final class Calculator {
         }
         return arg1;
     }
+
 
     /**
      * Вспомогательный метод вычисления втепеней числа 10
@@ -72,26 +94,8 @@ public final class Calculator {
     }
 
     /**
-     * Вспомогательный метод получения второго числа из строки
-     * число может быть отрицательным
-     *
-     * @return возвращает int значение второго числа в выражении
-     */
-    private int getArg2() {
-        int arg2 = 0;
-        for (int i = expression.length - 1, j = 0; i > indexOperator; i--) {
-            if (i == indexOperator + 1 && expression[i] == '-') {
-                arg2 *= -1;
-            } else {
-                arg2 += (getNumber(i) * degreeOfTen(j++));
-            }
-        }
-        return arg2;
-    }
-
-    /**
      * Вспомогательный метод перевода символа числа в число
-     * если символ не чило выпадет исключение IllegalArgumentException
+     * если символ не чиcло выпадет исключение IllegalArgumentException
      *
      * @return возвращает int число
      */
@@ -105,24 +109,20 @@ public final class Calculator {
     }
 
     /**
-     * Вспомогательный метод получения символа операции
-     *
-     * @return возвращает char символ операции
-     */
-    private char getOperator() {
-        return indexOperator > 0 ? expression[indexOperator] : ' ';
-    }
-
-    /**
-     * Вспомогательный метод поиска символа
+     * Вспомогательный метод поиска символа операции в массиве char начиная с индекса start
      *
      * @return возвращает индекс символа
      */
-    private int indexOf(char c) {
-        for (int i = 1; i < expression.length; i++) {
-            if (expression[i] == c) return i;
+    private int findIndexOperator(char[] chars, int start) {
+        for (int i = start; i < chars.length; i++) {
+            switch (chars[i]) {
+                case '+', '-' -> {
+                    return i;
+                }
+            }
         }
         return -1;
     }
+
 
 }
