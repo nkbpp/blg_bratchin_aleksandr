@@ -45,11 +45,11 @@ class CalculatorTest {
 
     /**
      * Тестирование метода calculate()
-     * Вычитание
+     * длинные варажения
      */
     @ParameterizedTest()
     @ValueSource(strings = {"10-10-4", "10-4-10+2+2-4", "-10+2+4+-2+2"})
-    void testCalculatorLongExpression (String expression) {
+    void testCalculatorLongExpression(String expression) {
         Calculator calculator = new Calculator(expression);
 
         int actualSolution = calculator.calculate();
@@ -58,61 +58,63 @@ class CalculatorTest {
     }
 
     /**
-     * Тестирование метода calculate()
-     * Оператор отсутствует
-     */
-    @Test
-    void testCalculatorNoOperator() {
-        Calculator calculator = new Calculator("1/1");
-
-        Throwable thrown = catchThrowable(calculator::calculate);
-
-        assertThat(thrown).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Operation sign not found in string");
-    }
-
-    /**
      * Тестирование метода calculate() неверный ввод чисел
-     * Неверный аргумент
+     * неизвестный символ
      */
     @ParameterizedTest()
-    @ValueSource(strings = {"/+1", "1+$3"})
-    void testCalculatorArgumentIsNotANumber (String expression) {
+    @ValueSource(strings = {"/+1", "1+$3", "1/1"})
+    void testCalculatorUnknownCharacter(String expression) {
         Calculator calculator = new Calculator(expression);
 
         Throwable thrown = catchThrowable(calculator::calculate);
 
         assertThat(thrown).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("is not a number!");
+                .hasMessageContaining("Unexpected value");
     }
 
     /**
-     * Тестирование метода calculate() несколько операторов подряд (пропуск чисел)
-     * Неверный аргумент
+     * Тестирование метода calculate()
+     * несколько операторов подряд
      */
     @ParameterizedTest()
-    @ValueSource(strings = {"1--", "1++", "1+-", "++1", "--1"})
+    @ValueSource(strings = {"++1", "--1", "1+--2"})
     void testCalculatorInvalidArgument(String expression) {
         Calculator calculator = new Calculator(expression);
 
         Throwable thrown = catchThrowable(calculator::calculate);
 
         assertThat(thrown).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("is not a number!");
+                .hasMessageContaining("Wrong order of operators");
     }
 
     /**
      * Тестирование метода calculate()
+     * выражение оканчивается оператором
      */
     @ParameterizedTest()
-    @ValueSource(strings = {"1-", "1+", "1"})
-    void testCalculatorInvalidException(String expression) {
+    @ValueSource(strings = {"1--", "1++", "1+-"})
+    void testCalculatorLastSymbol(String expression) {
         Calculator calculator = new Calculator(expression);
 
         Throwable thrown = catchThrowable(calculator::calculate);
 
         assertThat(thrown).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Invalid expression");
+                .hasMessageContaining("The string does not end with a number");
+    }
+
+    /**
+     * Тестирование метода calculate()
+     * недостаточно символов для вычисления
+     */
+    @ParameterizedTest()
+    @ValueSource(strings = {"1", "-1", "1+"})
+    void testCalculatorNotEnoughCharacters(String expression) {
+        Calculator calculator = new Calculator(expression);
+
+        Throwable thrown = catchThrowable(calculator::calculate);
+
+        assertThat(thrown).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Not enough characters");
     }
 
 }
