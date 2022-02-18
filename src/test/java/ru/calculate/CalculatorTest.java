@@ -1,6 +1,8 @@
 package ru.calculate;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -20,76 +22,99 @@ class CalculatorTest {
      */
     @Test
     void testCalculatorAddition() {
-        Calculator calculator1 = new Calculator("2+2");
-        Calculator calculator2 = new Calculator("999+1001");
+        Calculator calculator = new Calculator("2+2");
 
-        int actualSolution1 = calculator1.calculate();
-        int actualSolution2 = calculator2.calculate();
+        int actualSolution = calculator.calculate();
 
-        assertThat(actualSolution1).isEqualTo(4);
-        assertThat(actualSolution2).isEqualTo(2000);
+        assertThat(actualSolution).isEqualTo(4);
     }
 
     /**
      * Тестирование метода calculate()
      * Вычитание
      */
-    @Test
-    void testCalculatorSubtraction() {
-        Calculator calculator1 = new Calculator("2-6");
-        Calculator calculator2 = new Calculator("999-1001");
+    @ParameterizedTest()
+    @ValueSource(strings = {"2-6", "997-1001"})
+    void testCalculatorSubtraction(String expression) {
+        Calculator calculator = new Calculator(expression);
 
-        int actualSolution1 = calculator1.calculate();
-        int actualSolution2 = calculator2.calculate();
+        int actualSolution = calculator.calculate();
 
-        assertThat(actualSolution1).isEqualTo(-4);
-        assertThat(actualSolution2).isEqualTo(-2);
+        assertThat(actualSolution).isEqualTo(-4);
     }
 
     /**
      * Тестирование метода calculate()
-     * Отрицительные аргументы
+     * длинные варажения
      */
-    @Test
-    void testCalculatorNegativeNumber() {
-        Calculator calculator1 = new Calculator("-999-1001");
-        Calculator calculator2 = new Calculator("-10+-10");
+    @ParameterizedTest()
+    @ValueSource(strings = {"10-10-4", "10-4-10+2+2-4", "-10+2+4+-2+2"})
+    void testCalculatorLongExpression(String expression) {
+        Calculator calculator = new Calculator(expression);
 
-        int actualSolution1 = calculator1.calculate();
-        int actualSolution2 = calculator2.calculate();
+        int actualSolution = calculator.calculate();
 
-        assertThat(actualSolution1).isEqualTo(-2000);
-        assertThat(actualSolution2).isEqualTo(-20);
+        assertThat(actualSolution).isEqualTo(-4);
     }
 
     /**
-     * Тестирование метода calculate()
-     * Неверный оператор
+     * Тестирование метода calculate() неверный ввод чисел
+     * неизвестный символ
      */
-    @Test
-    void testCalculatorInvalidOperator() {
-
-        Throwable thrown = catchThrowable(() ->
-                new Calculator("1/1")
-        );
-
-        assertThat(thrown).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Correct operations are '+' or '-'");
-    }
-
-    /**
-     * Тестирование метода calculate()
-     * Неверный аргумент
-     */
-    @Test
-    void testCalculatorInvalidArgument() {
-        Calculator calculator = new Calculator("/+1");
+    @ParameterizedTest()
+    @ValueSource(strings = {"/+1", "1+$3", "1/1"})
+    void testCalculatorUnknownCharacter(String expression) {
+        Calculator calculator = new Calculator(expression);
 
         Throwable thrown = catchThrowable(calculator::calculate);
 
         assertThat(thrown).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("is not a number!");
+                .hasMessageContaining("Unexpected value");
     }
 
+    /**
+     * Тестирование метода calculate()
+     * несколько операторов подряд
+     */
+    @ParameterizedTest()
+    @ValueSource(strings = {"++1", "--1", "1+--2"})
+    void testCalculatorInvalidArgument(String expression) {
+        Calculator calculator = new Calculator(expression);
+
+        Throwable thrown = catchThrowable(calculator::calculate);
+
+        assertThat(thrown).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Wrong order of operators");
+    }
+
+    /**
+     * Тестирование метода calculate()
+     * выражение оканчивается оператором
+     */
+    @ParameterizedTest()
+    @ValueSource(strings = {"1--", "1++", "1+-"})
+    void testCalculatorLastSymbol(String expression) {
+        Calculator calculator = new Calculator(expression);
+
+        Throwable thrown = catchThrowable(calculator::calculate);
+
+        assertThat(thrown).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("The string does not end with a number");
+    }
+
+    /**
+     * Тестирование метода calculate()
+     * недостаточно символов для вычисления
+     */
+    @ParameterizedTest()
+    @ValueSource(strings = {"1", "-1", "1+"})
+    void testCalculatorNotEnoughCharacters(String expression) {
+        Calculator calculator = new Calculator(expression);
+
+        Throwable thrown = catchThrowable(calculator::calculate);
+
+        assertThat(thrown).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Not enough characters");
+    }
 
 }
