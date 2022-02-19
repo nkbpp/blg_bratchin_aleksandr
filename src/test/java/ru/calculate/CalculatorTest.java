@@ -31,6 +31,32 @@ class CalculatorTest {
 
     /**
      * Тестирование метода calculate()
+     * Умножение
+     */
+    @Test
+    void testCalculatorMultiply() {
+        Calculator calculator = new Calculator("7*8");
+
+        int actualSolution = calculator.calculate();
+
+        assertThat(actualSolution).isEqualTo(56);
+    }
+
+    /**
+     * Тестирование метода calculate()
+     * Деление
+     */
+    @Test
+    void testCalculatorDivide() {
+        Calculator calculator = new Calculator("56/8");
+
+        int actualSolution = calculator.calculate();
+
+        assertThat(actualSolution).isEqualTo(7);
+    }
+
+    /**
+     * Тестирование метода calculate()
      * Вычитание
      */
     @ParameterizedTest()
@@ -48,7 +74,7 @@ class CalculatorTest {
      * длинные варажения
      */
     @ParameterizedTest()
-    @ValueSource(strings = {"10-10-4", "10-4-10+2+2-4", "-10+2+4+-2+2"})
+    @ValueSource(strings = {"10-10-4", "10-4-10+2+2-4", "-10+2+4+-2+2", "10/2+2*3-15", "-4+4+10/2+2*3-15", "10+10/-2+2*3-15"})
     void testCalculatorLongExpression(String expression) {
         Calculator calculator = new Calculator(expression);
 
@@ -62,7 +88,7 @@ class CalculatorTest {
      * неизвестный символ
      */
     @ParameterizedTest()
-    @ValueSource(strings = {"/+1", "1+$3", "1/1"})
+    @ValueSource(strings = {"$+1", "1+$3", "1^1"})
     void testCalculatorUnknownCharacter(String expression) {
         Calculator calculator = new Calculator(expression);
 
