@@ -19,19 +19,27 @@ public final class Calculator {
      *
      * @return возвращает int значение
      */
-    public int calculate() {
+    public double calculate() {
         if (expression.length < 3) {
             throw new IllegalArgumentException("Not enough characters to calculate"); //недостаточно символов для вычисления
         }
-        int arg = 0;
+        double arg = 0;
         boolean newChislo = true;
         boolean positiveNumber = true;
+        int fractionalPart = -1;
 
-        StackInt stackInt = new StackInt(expression.length - 1);
+        StackDouble stackDouble = new StackDouble(expression.length - 1);
         StackChar stackChar = new StackChar(expression.length - 1);
         for (int i = 0; i < expression.length; i++) {
             Operator tekOperator = Operator.getOperator(expression[i]);
             switch (expression[i]) {
+                case '.' -> {
+                    if (fractionalPart == -1 && i > 0 && i < expression.length - 1 && !newChislo) {
+                        fractionalPart++;
+                    } else {
+                        throw new IllegalArgumentException("Character '.' in the wrong place");
+                    }
+                }
                 case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' -> {
                     if (newChislo) {
                         arg = getNumber(i);
@@ -43,6 +51,9 @@ public final class Calculator {
                         arg = arg * 10 + getNumber(i);
                     }
                     newChislo = false;
+                    if (fractionalPart > -1) {
+                        fractionalPart++;
+                    }
                 }
                 case '+', '-', '*', '/' -> {
                     if (i + 1 == expression.length) {
@@ -58,33 +69,57 @@ public final class Calculator {
                             throw new IllegalArgumentException("Wrong order of operators"); //два оператора подряд
                         }
                     } else {
-                        int result = arg;
+                        double result = (fractionalPart == -1) ? arg : insertAComma(arg, fractionalPart);
 
                         if (!stackChar.isEmpty() && tekOperator.getPriority() < Operator.getOperator(stackChar.peek()).getPriority()) { // стек операторов пуст или приоритет текущего оператора ниже или равен
-                            stackInt.push(arg);
+                            stackDouble.push(arg);
                             while (!stackChar.isEmpty() && tekOperator.getPriority() < Operator.getOperator(stackChar.peek()).getPriority()) {
-                                int val1 = stackInt.pop();
-                                int val2 = stackInt.pop();
+                                double val1 = stackDouble.pop();
+                                double val2 = stackDouble.pop();
                                 result = evaluateExpression(stackChar.pop(), val2, val1);
                             }
                         }
-                        stackInt.push(result);
+                        stackDouble.push(result);
                         stackChar.push(tekOperator.getOperator());
                         newChislo = true;
                         positiveNumber = true;
+                        fractionalPart = -1;
                     }
                 }
                 default -> throw new IllegalArgumentException("Unexpected value: " + expression[i]); //неизвестный символ
             }
         }
-
-        int result = evaluateExpression(stackChar.pop(), stackInt.pop(), arg);
+        stackDouble.push(arg);
+        stackChar.reverse();
+        stackDouble.reverse();
+        double result = evaluateExpression(stackChar.pop(), stackDouble.pop(), insertAComma(stackDouble.pop(), fractionalPart));
         while (!stackChar.isEmpty()) {
-            result = evaluateExpression(stackChar.pop(), result, stackInt.pop());
+            result = evaluateExpression(stackChar.pop(), result, stackDouble.pop());
         }
         return result;
     }
 
+    /**
+     * Вспомогательный метод вычисления втепеней числа 10
+     *
+     * @return возвращает int значение 10 в степени degree
+     */
+    private int degreeOfTen(int degree) {
+        int result = 1;
+        for (int i = 0; i < degree; i++) {
+            result *= 10;
+        }
+        return result;
+    }
+
+    /**
+     * Вспомогательный метод добавляет запятую
+     *
+     * @return возвращает val деленное на 10 в степени fractionalPart
+     */
+    private double insertAComma(double val, int fractionalPart) {
+        return (fractionalPart == -1) ? val : val / degreeOfTen(fractionalPart);
+    }
 
     /**
      * Вспомогательный метод перевода символа числа в число
@@ -97,10 +132,8 @@ public final class Calculator {
 
     /**
      * Вспомогательный метод вычисляет результат выполнения операции над атрибутами arg1, arg2
-     *
-     * @return возвращает индекс символа
      */
-    private int evaluateExpression(char c, int arg1, int arg2) {
+    private double evaluateExpression(char c, double arg1, double arg2) {
         return switch (c) {
             case '+' -> arg1 + arg2;
             case '-' -> arg1 - arg2;
@@ -111,23 +144,31 @@ public final class Calculator {
     }
 
     /**
-     * Стек интов для хранения чисел
+     * Стек double для хранения чисел
      */
-    private class StackInt {
-        private int[] stackArr;
+    private class StackDouble {
+        private double[] stackArr;
         private int top;
 
-        public StackInt(int size) {
-            stackArr = new int[size];
+        public StackDouble(int size) {
+            stackArr = new double[size];
             top = -1;
         }
 
-        public void push(int value) {
+        public void push(double value) {
             stackArr[++top] = value;
         }
 
-        public int pop() {
+        public double pop() {
             return stackArr[top--];
+        }
+
+        public void reverse() {
+            double[] newStackArr = new double[stackArr.length];
+            for (int i = top, j = 0; i >= 0; i--) {
+                newStackArr[j++] = stackArr[i];
+            }
+            stackArr = newStackArr;
         }
 
     }
@@ -136,7 +177,7 @@ public final class Calculator {
      * Стек char для хранения операций
      */
     private class StackChar {
-        private final char[] stackArr;
+        private char[] stackArr;
         private int top;
 
         public StackChar(int size) {
@@ -158,6 +199,14 @@ public final class Calculator {
 
         public boolean isEmpty() {
             return top == -1;
+        }
+
+        public void reverse() {
+            char[] newStackArr = new char[stackArr.length];
+            for (int i = top, j = 0; i >= 0; i--) {
+                newStackArr[j++] = stackArr[i];
+            }
+            stackArr = newStackArr;
         }
     }
 
