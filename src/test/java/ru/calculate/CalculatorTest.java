@@ -24,7 +24,7 @@ class CalculatorTest {
     void testCalculatorAddition() {
         Calculator calculator = new Calculator("2+2");
 
-        int actualSolution = calculator.calculate();
+        double actualSolution = calculator.calculate();
 
         assertThat(actualSolution).isEqualTo(4);
     }
@@ -37,7 +37,7 @@ class CalculatorTest {
     void testCalculatorMultiply() {
         Calculator calculator = new Calculator("7*8");
 
-        int actualSolution = calculator.calculate();
+        double actualSolution = calculator.calculate();
 
         assertThat(actualSolution).isEqualTo(56);
     }
@@ -50,7 +50,7 @@ class CalculatorTest {
     void testCalculatorDivide() {
         Calculator calculator = new Calculator("56/8");
 
-        int actualSolution = calculator.calculate();
+        double actualSolution = calculator.calculate();
 
         assertThat(actualSolution).isEqualTo(7);
     }
@@ -64,7 +64,7 @@ class CalculatorTest {
     void testCalculatorSubtraction(String expression) {
         Calculator calculator = new Calculator(expression);
 
-        int actualSolution = calculator.calculate();
+        double actualSolution = calculator.calculate();
 
         assertThat(actualSolution).isEqualTo(-4);
     }
@@ -78,9 +78,23 @@ class CalculatorTest {
     void testCalculatorLongExpression(String expression) {
         Calculator calculator = new Calculator(expression);
 
-        int actualSolution = calculator.calculate();
+        double actualSolution = calculator.calculate();
 
         assertThat(actualSolution).isEqualTo(-4);
+    }
+
+    /**
+     * Тестирование метода calculate()
+     * Дробные числа
+     */
+    @ParameterizedTest()
+    @ValueSource(strings = {"4*2.5", "2.5*4", "100-5.25*30-0.5+68"})
+    void testCalculatorFractions(String expression) {
+        Calculator calculator = new Calculator(expression);
+
+        double actualSolution = calculator.calculate();
+
+        assertThat(actualSolution).isEqualTo(10);
     }
 
     /**
@@ -96,6 +110,21 @@ class CalculatorTest {
 
         assertThat(thrown).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Unexpected value");
+    }
+
+    /**
+     * Тестирование метода calculate()
+     * Проверка запятой
+     */
+    @ParameterizedTest()
+    @ValueSource(strings = {".6+3", "6+3.", "6+.3", "6+-.3", "997-10..01"})
+    void testCalculatorComma(String expression) {
+        Calculator calculator = new Calculator(expression);
+
+        Throwable thrown = catchThrowable(calculator::calculate);
+
+        assertThat(thrown).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("'.'");
     }
 
     /**
