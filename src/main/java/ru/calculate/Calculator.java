@@ -1,7 +1,7 @@
 package ru.calculate;
 
 /**
- * #4 Доработка калькулятор добавление операций деления и умножения (Алгоритм Дейкстра)
+ * #8 Доработка калькулятор. Добавление скобок
  *
  * @author Александр Братчин
  */
@@ -26,7 +26,10 @@ public final class Calculator {
         double arg = 0;
         boolean newChislo = true;
         boolean positiveNumber = true;
+        boolean endBrackets = false;
         int fractionalPart = -1;
+        int colBrackets = 0;
+
 
         StackDouble stackDouble = new StackDouble(expression.length - 1);
         StackChar stackChar = new StackChar(expression.length - 1);
@@ -69,34 +72,61 @@ public final class Calculator {
                             throw new IllegalArgumentException("Wrong order of operators"); //два оператора подряд
                         }
                     } else {
-                        double result = (fractionalPart == -1) ? arg : insertAComma(arg, fractionalPart);
-
-                        if (!stackChar.isEmpty() && tekOperator.getPriority() < Operator.getOperator(stackChar.peek()).getPriority()) { // стек операторов пуст или приоритет текущего оператора ниже или равен
-                            stackDouble.push(arg);
-                            while (!stackChar.isEmpty() && tekOperator.getPriority() < Operator.getOperator(stackChar.peek()).getPriority()) {
-                                double val1 = stackDouble.pop();
-                                double val2 = stackDouble.pop();
-                                result = evaluateExpression(stackChar.pop(), val2, val1);
-                            }
+                        if(!endBrackets){
+                            stackDouble.push(insertAComma(arg, fractionalPart));//не добавлять после закрывающейся скобки
                         }
-                        stackDouble.push(result);
+                        // стек операторов пуст или приоритет текущего оператора ниже
+                        while (!stackChar.isEmpty() && tekOperator.getPriority() < Operator.getOperator(stackChar.peek()).getPriority()) {
+                            double val1 = stackDouble.pop();
+                            double val2 = stackDouble.pop();
+                            stackDouble.push(evaluateExpression(stackChar.pop(), val2, val1));
+                        }
+
                         stackChar.push(tekOperator.getOperator());
                         newChislo = true;
                         positiveNumber = true;
                         fractionalPart = -1;
+                        endBrackets = false;
                     }
+                }
+                case '(' -> {
+                    stackChar.push(tekOperator.getOperator());
+                    colBrackets++;
+                }
+                case ')' -> {
+                    colBrackets--;
+                    if (stackDouble.isEmpty() || stackChar.isEmpty() || colBrackets < 0) {//нарушен порядок скобок
+                        throw new IllegalArgumentException("Parentheses out of order");
+                    }
+                    stackDouble.push(insertAComma(arg, fractionalPart));
+                    while (stackChar.peek() != '(') {
+                        double val1 = stackDouble.pop();
+                        double val2 = stackDouble.pop();
+                        stackDouble.push(evaluateExpression(stackChar.pop(), val2, val1));
+                    }
+                    stackChar.pop();
+                    newChislo = false;
+                    endBrackets = true;
                 }
                 default -> throw new IllegalArgumentException("Unexpected value: " + expression[i]); //неизвестный символ
             }
         }
-        stackDouble.push(arg);
-        stackChar.reverse();
-        stackDouble.reverse();
-        double result = evaluateExpression(stackChar.pop(), stackDouble.pop(), insertAComma(stackDouble.pop(), fractionalPart));
-        while (!stackChar.isEmpty()) {
-            result = evaluateExpression(stackChar.pop(), result, stackDouble.pop());
+        if (colBrackets != 0) {//нарушен порядок скобок
+            throw new IllegalArgumentException("Parentheses out of order");
         }
-        return result;
+        if (!stackChar.isEmpty()) {// если еще есть операторы
+            stackDouble.push(insertAComma(arg, fractionalPart));
+            stackChar.reverse();
+            stackDouble.reverse();
+            double result = evaluateExpression(stackChar.pop(), stackDouble.pop(), stackDouble.pop());
+            while (!stackChar.isEmpty()) {
+                result = evaluateExpression(stackChar.pop(), result, stackDouble.pop());
+            }
+            return result;
+        } else {
+            return stackDouble.pop();
+        }
+
     }
 
     /**
@@ -163,6 +193,10 @@ public final class Calculator {
             return stackArr[top--];
         }
 
+        public boolean isEmpty() {
+            return top == -1;
+        }
+
         public void reverse() {
             double[] newStackArr = new double[stackArr.length];
             for (int i = top, j = 0; i >= 0; i--) {
@@ -214,6 +248,8 @@ public final class Calculator {
      * Enum - нужен в основном для получения приоритета операции
      */
     private enum Operator {
+        OpeningBracket('(', 0),
+        CloseBracket(')', 0),
         Plus('+', 1),
         Minus('-', 1),
         Divide('/', 2),
@@ -238,6 +274,8 @@ public final class Calculator {
 
         static Operator getOperator(char val) {
             return switch (val) {
+                case '(' -> OpeningBracket;
+                case ')' -> CloseBracket;
                 case '+' -> Plus;
                 case '-' -> Minus;
                 case '/' -> Divide;

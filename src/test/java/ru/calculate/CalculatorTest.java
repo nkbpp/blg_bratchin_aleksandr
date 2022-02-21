@@ -98,6 +98,35 @@ class CalculatorTest {
     }
 
     /**
+     * Тестирование метода calculate()
+     * Скобки
+     */
+    @ParameterizedTest()
+    @ValueSource(strings = {"(2+2)", "8/(1+1)", "0.5*(1+1)+3", "(2-6.4)*(8.4-10.4)*40.3-350.64"})
+    void testCalculatorBrackets(String expression) {
+        Calculator calculator = new Calculator(expression);
+
+        double actualSolution = calculator.calculate();
+
+        assertThat(actualSolution).isEqualTo(4);
+    }
+
+    /**
+     * Тестирование метода calculate()
+     * Скобки нарушен порядок
+     */
+    @ParameterizedTest()
+    @ValueSource(strings = {"(2+2))", "((2+2)", "(())", "2+)2"})
+    void testCalculatorBracketsErr(String expression) {
+        Calculator calculator = new Calculator(expression);
+
+        Throwable thrown = catchThrowable(calculator::calculate);
+
+        assertThat(thrown).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Parentheses out of order");
+    }
+
+    /**
      * Тестирование метода calculate() неверный ввод чисел
      * неизвестный символ
      */
