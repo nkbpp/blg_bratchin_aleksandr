@@ -24,9 +24,9 @@ class CalculatorTest {
     void testCalculatorAddition() {
         Calculator calculator = new Calculator("2+2");
 
-        double actualSolution = calculator.calculate();
+        String actualSolution = calculator.calculate();
 
-        assertThat(actualSolution).isEqualTo(4);
+        assertThat(actualSolution).isEqualTo("4");
     }
 
     /**
@@ -37,9 +37,9 @@ class CalculatorTest {
     void testCalculatorMultiply() {
         Calculator calculator = new Calculator("7*8");
 
-        double actualSolution = calculator.calculate();
+        String actualSolution = calculator.calculate();
 
-        assertThat(actualSolution).isEqualTo(56);
+        assertThat(actualSolution).isEqualTo("56");
     }
 
     /**
@@ -50,9 +50,9 @@ class CalculatorTest {
     void testCalculatorDivide() {
         Calculator calculator = new Calculator("56/8");
 
-        double actualSolution = calculator.calculate();
+        String actualSolution = calculator.calculate();
 
-        assertThat(actualSolution).isEqualTo(7);
+        assertThat(actualSolution).isEqualTo("7");
     }
 
     /**
@@ -64,9 +64,9 @@ class CalculatorTest {
     void testCalculatorSubtraction(String expression) {
         Calculator calculator = new Calculator(expression);
 
-        double actualSolution = calculator.calculate();
+        String actualSolution = calculator.calculate();
 
-        assertThat(actualSolution).isEqualTo(-4);
+        assertThat(actualSolution).isEqualTo("-4");
     }
 
     /**
@@ -78,9 +78,9 @@ class CalculatorTest {
     void testCalculatorLongExpression(String expression) {
         Calculator calculator = new Calculator(expression);
 
-        double actualSolution = calculator.calculate();
+        String actualSolution = calculator.calculate();
 
-        assertThat(actualSolution).isEqualTo(-4);
+        assertThat(actualSolution).isEqualTo("-4");
     }
 
     /**
@@ -92,9 +92,9 @@ class CalculatorTest {
     void testCalculatorFractions(String expression) {
         Calculator calculator = new Calculator(expression);
 
-        double actualSolution = calculator.calculate();
+        String actualSolution = calculator.calculate();
 
-        assertThat(actualSolution).isEqualTo(10);
+        assertThat(actualSolution).isEqualTo("10");
     }
 
     /**
@@ -106,9 +106,9 @@ class CalculatorTest {
     void testCalculatorBrackets(String expression) {
         Calculator calculator = new Calculator(expression);
 
-        double actualSolution = calculator.calculate();
+        String actualSolution = calculator.calculate();
 
-        assertThat(actualSolution).isEqualTo(4);
+        assertThat(actualSolution).isEqualTo("4");
     }
 
     /**
@@ -200,5 +200,20 @@ class CalculatorTest {
         assertThat(thrown).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Not enough characters");
     }
+
+    /**
+     * Тестирование метода calculate()
+     * большие числа
+     */
+    @ParameterizedTest()
+    @ValueSource(strings = {"(20000000000000000000000000-600000000300000000.4)*(8.4-1000000000000000000000.4)*40.3"})
+    void testBigNumbers(String expression) {
+        Calculator calculator = new Calculator(expression);
+
+        String actualSolution = calculator.calculate();
+
+        assertThat(actualSolution).isEqualTo("-805999975819999987903551984073440000096720000128.96");
+    }
+
 
 }
