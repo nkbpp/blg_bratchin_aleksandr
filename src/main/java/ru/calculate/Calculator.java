@@ -1,7 +1,7 @@
 package ru.calculate;
 
 /**
- * #8 Доработка калькулятор. Добавление скобок
+ * #9 Доработка калькулятор. Добавлена поддержка длинных чисел
  *
  * @author Александр Братчин
  */
@@ -19,127 +19,12 @@ public final class Calculator {
      *
      * @return возвращает int значение
      */
-/*    public double calculate() {
-        if (expression.length < 3) {
-            throw new IllegalArgumentException("Not enough characters to calculate"); //недостаточно символов для вычисления
-        }
-        double arg = 0;
-        boolean newChislo = true;
-        boolean positiveNumber = true;
-        boolean endBrackets = false;
-        int fractionalPart = -1;
-        int colBrackets = 0;
-
-
-        StackDouble stackDouble = new StackDouble(expression.length - 1);
-        StackChar stackChar = new StackChar(expression.length - 1);
-        for (int i = 0; i < expression.length; i++) {
-            Operator tekOperator = Operator.getOperator(expression[i]);
-            switch (expression[i]) {
-                case '.' -> {
-                    if (fractionalPart == -1 && i > 0 && i < expression.length - 1 && !newChislo) {
-                        fractionalPart++;
-                    } else {
-                        throw new IllegalArgumentException("Character '.' in the wrong place");
-                    }
-                }
-                case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' -> {
-                    if (newChislo) {
-                        arg = getNumber(i);
-                        if (!positiveNumber) {
-                            arg *= -1;
-                            positiveNumber = true;
-                        }
-                    } else {
-                        arg = arg * 10 + getNumber(i);
-                    }
-                    newChislo = false;
-                    if (fractionalPart > -1) {
-                        fractionalPart++;
-                    }
-                }
-                case '+', '-', '*', '/' -> {
-                    if (i + 1 == expression.length) {
-                        throw new IllegalArgumentException("The string does not end with a number"); //выражение не должно заканчиваться знаком
-                    }
-                    if (newChislo) {
-                        if (tekOperator == Operator.Minus) {
-                            if (!positiveNumber) {
-                                throw new IllegalArgumentException("Wrong order of operators!"); //два оператора подряд
-                            }
-                            positiveNumber = false;
-                        } else {
-                            throw new IllegalArgumentException("Wrong order of operators"); //два оператора подряд
-                        }
-                    } else {
-                        if(!endBrackets){
-                            stackDouble.push(insertAComma(arg, fractionalPart));//не добавлять после закрывающейся скобки
-                        }
-                        // стек операторов пуст или приоритет текущего оператора ниже
-                        while (!stackChar.isEmpty() && tekOperator.getPriority() < Operator.getOperator(stackChar.peek()).getPriority()) {
-                            double val1 = stackDouble.pop();
-                            double val2 = stackDouble.pop();
-                            stackDouble.push(evaluateExpression(stackChar.pop(), val2, val1));
-                        }
-
-                        stackChar.push(tekOperator.getOperator());
-                        newChislo = true;
-                        positiveNumber = true;
-                        fractionalPart = -1;
-                        endBrackets = false;
-                    }
-                }
-                case '(' -> {
-                    stackChar.push(tekOperator.getOperator());
-                    colBrackets++;
-                }
-                case ')' -> {
-                    colBrackets--;
-                    if (stackDouble.isEmpty() || stackChar.isEmpty() || colBrackets < 0) {//нарушен порядок скобок
-                        throw new IllegalArgumentException("Parentheses out of order");
-                    }
-                    stackDouble.push(insertAComma(arg, fractionalPart));
-                    while (stackChar.peek() != '(') {
-                        double val1 = stackDouble.pop();
-                        double val2 = stackDouble.pop();
-                        stackDouble.push(evaluateExpression(stackChar.pop(), val2, val1));
-                    }
-                    stackChar.pop();
-                    newChislo = false;
-                    endBrackets = true;
-                }
-                default -> throw new IllegalArgumentException("Unexpected value: " + expression[i]); //неизвестный символ
-            }
-        }
-        if (colBrackets != 0) {//нарушен порядок скобок
-            throw new IllegalArgumentException("Parentheses out of order");
-        }
-        if (!stackChar.isEmpty()) {// если еще есть операторы
-            stackDouble.push(insertAComma(arg, fractionalPart));
-            stackChar.reverse();
-            stackDouble.reverse();
-            double result = evaluateExpression(stackChar.pop(), stackDouble.pop(), stackDouble.pop());
-            while (!stackChar.isEmpty()) {
-                result = evaluateExpression(stackChar.pop(), result, stackDouble.pop());
-            }
-            return result;
-        } else {
-            return stackDouble.pop();
-        }
-
-    }*/
-
-    /**
-     * Метод получения результата выполнения выражения
-     *
-     * @return возвращает int значение
-     */
     public String calculate() {
         if (expression.length < 3) {
             throw new IllegalArgumentException("Not enough characters to calculate"); //недостаточно символов для вычисления
         }
-        MyBigNumber arg = new MyBigNumber(0, new char[] {'0'});
-        boolean newChislo = true;
+        MyBigNumber arg = new MyBigNumber("0");
+        boolean startNewNumber = true;
         boolean positiveNumber = true;
         boolean endBrackets = false;
         int fractionalPart = -1;
@@ -152,7 +37,7 @@ public final class Calculator {
             Operator tekOperator = Operator.getOperator(expression[i]);
             switch (expression[i]) {
                 case '.' -> {
-                    if (fractionalPart == -1 && i > 0 && i < expression.length - 1 && !newChislo) {
+                    if (fractionalPart == -1 && i > 0 && i < expression.length - 1 && !startNewNumber) {
                         fractionalPart++;
                         //arg.unscaledValue = MyBigNumber.clearZero(arg.unscaledValue);
                     } else {
@@ -161,21 +46,21 @@ public final class Calculator {
                 }
                 case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' -> {
 
-                    if (newChislo) {
+                    if (startNewNumber) {
                         arg = new MyBigNumber(new char[]{expression[i]});
                         if (!positiveNumber) {
-                            arg = arg.multiply(new MyBigNumber(new char[]{'-','1'}));
+                            arg = arg.multiply(new MyBigNumber("-1"));
                             positiveNumber = true;
                         }
                     } else {
-                        if(MyBigNumber.clearZero(arg.unscaledValue).length == 0){
+                        if (MyBigNumber.clearZero(arg.unscaledValue).length == 0) {
                             arg = new MyBigNumber(new char[]{expression[i]});
                         } else {
-                            arg = arg.multiply(new MyBigNumber(new char[]{'1','0'})).add(new MyBigNumber(new char[]{expression[i]}));
+                            arg = arg.multiply(new MyBigNumber("10")).add(new MyBigNumber(new char[]{expression[i]}));
                         }
 
                     }
-                    newChislo = false;
+                    startNewNumber = false;
                     if (fractionalPart > -1) {
                         fractionalPart++;
                     }
@@ -184,7 +69,7 @@ public final class Calculator {
                     if (i + 1 == expression.length) {
                         throw new IllegalArgumentException("The string does not end with a number"); //выражение не должно заканчиваться знаком
                     }
-                    if (newChislo) {
+                    if (startNewNumber) {
                         if (tekOperator == Operator.Minus) {
                             if (!positiveNumber) {
                                 throw new IllegalArgumentException("Wrong order of operators!"); //два оператора подряд
@@ -194,10 +79,9 @@ public final class Calculator {
                             throw new IllegalArgumentException("Wrong order of operators"); //два оператора подряд
                         }
                     } else {
-                        if(!endBrackets){
+                        if (!endBrackets) {
                             arg.point = fractionalPart;
                             stackBigNumber.push(arg);
-                            //stackDouble.push(insertAComma(arg, fractionalPart));//не добавлять после закрывающейся скобки
                         }
                         // стек операторов пуст или приоритет текущего оператора ниже
                         while (!stackChar.isEmpty() && tekOperator.getPriority() < Operator.getOperator(stackChar.peek()).getPriority()) {
@@ -207,7 +91,7 @@ public final class Calculator {
                         }
 
                         stackChar.push(tekOperator.getOperator());
-                        newChislo = true;
+                        startNewNumber = true;
                         positiveNumber = true;
                         fractionalPart = -1;
                         endBrackets = false;
@@ -224,14 +108,13 @@ public final class Calculator {
                     }
                     arg.point = fractionalPart;
                     stackBigNumber.push(arg);
-                    //stackDouble.push(insertAComma(arg, fractionalPart));
                     while (stackChar.peek() != '(') {
                         MyBigNumber val1 = stackBigNumber.pop();
                         MyBigNumber val2 = stackBigNumber.pop();
                         stackBigNumber.push(evaluateExpression(stackChar.pop(), val2, val1));
                     }
                     stackChar.pop();
-                    newChislo = false;
+                    startNewNumber = false;
                     endBrackets = true;
                 }
                 default -> throw new IllegalArgumentException("Unexpected value: " + expression[i]); //неизвестный символ
@@ -243,7 +126,6 @@ public final class Calculator {
         if (!stackChar.isEmpty()) {// если еще есть операторы
             arg.point = fractionalPart;
             stackBigNumber.push(arg);
-            //stackDouble.push(insertAComma(arg, fractionalPart));
             stackChar.reverse();
             stackBigNumber.reverse();
             MyBigNumber result = evaluateExpression(stackChar.pop(), stackBigNumber.pop(), stackBigNumber.pop());
@@ -255,50 +137,6 @@ public final class Calculator {
             return stackBigNumber.pop().toString();
         }
 
-    }
-
-    /**
-     * Вспомогательный метод вычисления втепеней числа 10
-     *
-     * @return возвращает int значение 10 в степени degree
-     */
-    private int degreeOfTen(int degree) {
-        int result = 1;
-        for (int i = 0; i < degree; i++) {
-            result *= 10;
-        }
-        return result;
-    }
-
-    /**
-     * Вспомогательный метод добавляет запятую
-     *
-     * @return возвращает val деленное на 10 в степени fractionalPart
-     */
-    private double insertAComma(double val, int fractionalPart) {
-        return (fractionalPart == -1) ? val : val / degreeOfTen(fractionalPart);
-    }
-
-    /**
-     * Вспомогательный метод перевода символа числа в число
-     *
-     * @return возвращает int число
-     */
-    private int getNumber(int index) {
-        return (expression[index] - '0');
-    }
-
-    /**
-     * Вспомогательный метод вычисляет результат выполнения операции над атрибутами arg1, arg2
-     */
-    private double evaluateExpression(char c, double arg1, double arg2) {
-        return switch (c) {
-            case '+' -> arg1 + arg2;
-            case '-' -> arg1 - arg2;
-            case '/' -> arg1 / arg2;
-            case '*' -> arg1 * arg2;
-            default -> arg2;
-        };
     }
 
     /**
@@ -363,8 +201,8 @@ public final class Calculator {
         Multiply('*', 2),
         Non('#', -1);
 
-        char operator;
-        int priority;
+        final char operator;
+        final int priority;
 
         Operator(char operator, int priority) {
             this.operator = operator;
@@ -390,40 +228,6 @@ public final class Calculator {
                 default -> Non;
             };
         }
-    }
-
-    /**
-     * Стек double для хранения чисел
-     */
-    private class StackDouble {
-        private double[] stackArr;
-        private int top;
-
-        public StackDouble(int size) {
-            stackArr = new double[size];
-            top = -1;
-        }
-
-        public void push(double value) {
-            stackArr[++top] = value;
-        }
-
-        public double pop() {
-            return stackArr[top--];
-        }
-
-        public boolean isEmpty() {
-            return top == -1;
-        }
-
-        public void reverse() {
-            double[] newStackArr = new double[stackArr.length];
-            for (int i = top, j = 0; i >= 0; i--) {
-                newStackArr[j++] = stackArr[i];
-            }
-            stackArr = newStackArr;
-        }
-
     }
 
     /**
@@ -472,18 +276,19 @@ public final class Calculator {
 
         public MyBigNumber(char[] str) {
             if (str.length == 0) {
-                throw new RuntimeException();// todo строка пуста
+                throw new NullPointerException();//строка пуста
             }
-            if (str.length == 1 && str[0] == '0') { //число 0
-                scale = 0;
-            }
+
             if (str.length > 1) { //определяем знак числа
                 scale = (str[0] == '-') ? -1 : 1;
             } else {
                 scale = 1;
+                if (str.length == 1 && str[0] == '0') { //число 0
+                    scale = 0;
+                }
             }
 
-            for (int i = str.length - 1, n = 0; i >= 0; i--, n++) {// todo находим точку
+            for (int i = str.length - 1, n = 0; i >= 0; i--, n++) {
                 if (str[i] == '.' || str[i] == ',') {
                     point = n;
                 }
@@ -519,49 +324,48 @@ public final class Calculator {
 
         @Override
         public String toString() {
-            int maxLenght = unscaledValue.length;
-            if(point != -1) {
-                if(maxLenght - point - 1 >= 0) {
-                    maxLenght = maxLenght + 1;
-                } else if(maxLenght - point - 1 < 0){
-                    maxLenght = maxLenght + (point + 2 - maxLenght);
+            int maxLength = unscaledValue.length;
+            if (point != -1) {
+                if (maxLength - point - 1 >= 0) {
+                    maxLength = maxLength + 1;
+                } else if (maxLength - point - 1 < 0) {
+                    maxLength = maxLength + (point + 2 - maxLength);
                 }
             }
-            maxLenght = scale == -1 ? maxLenght + 1 : maxLenght;
+            maxLength = scale == -1 ? maxLength + 1 : maxLength;
 
-            char[] result = new char[maxLenght];
+            char[] result = new char[maxLength];
             if (scale == -1) {
                 result[0] = '-';
             }
             if (point != -1) {
-                result[maxLenght - point - 1] = '.';
+                result[maxLength - point - 1] = '.';
             }
 
-            for (int i = maxLenght - 1 , j = unscaledValue.length-1; i >= 0 ; i--) {
-                if(result[i] == '-') {
+            for (int i = maxLength - 1, j = unscaledValue.length - 1; i >= 0; i--) {
+                if (result[i] == '-') {
                     break;
                 }
-                if(result[i] == '.') {
+                if (result[i] == '.') {
                     i--;
                 }
-                if(j>=0){
+                if (j >= 0) {
                     result[i] = unscaledValue[j--];
                 } else {
                     result[i] = '0';
                 }
             }
 
-            if(point != -1){
+            if (point != -1) {
                 result = reverse(clearZero(reverse(result)));
-                if(result[result.length-1] == '.'){
-                    char[] resultWithoutPoint = new char[result.length-1];
+                if (result[result.length - 1] == '.') {
+                    char[] resultWithoutPoint = new char[result.length - 1];
                     for (int i = 0; i < resultWithoutPoint.length; i++) {
                         resultWithoutPoint[i] = result[i];
                     }
                     return new String(resultWithoutPoint);
                 }
             }
-
 
             return new String(result);
         }
@@ -570,7 +374,7 @@ public final class Calculator {
          * Сложение
          */
         private char[] sum(char[] arg1, char[] arg2) { //когда знаки одинаковы сложение
-            char[] resultArr = new char[arg1.length > arg2.length ? arg1.length : arg2.length];
+            char[] resultArr = new char[max(arg1.length, arg2.length)];
 
             int over = 0;
             char[] reverseArg1 = reverse(arg1);
@@ -591,6 +395,12 @@ public final class Calculator {
             return over > 0 ? join(new char[]{getChar(over)}, reverse(resultArr)) : reverse(resultArr);
         }
 
+        /**
+         * Максимум
+         */
+        private int max(int arg1, int arg2) {
+            return arg1 > arg2 ? arg1 : arg2;
+        }
 
         /**
          * вычитание
@@ -624,23 +434,28 @@ public final class Calculator {
         /**
          * Приводит переменные к целым числам и возвращает максимальный множитель 10
          */
-        private int castingToAnInteger(MyBigNumber val1, MyBigNumber  val2) {
-            int pointMax = val1.point > val2.point ? val1.point : val2.point;
+        private int castingToAnInteger(MyBigNumber val1, MyBigNumber val2) {
+            int pointMax = max(val1.point, val2.point);
             if (pointMax != -1) {
-                for (int i = 0; i < pointMax; i++) {
-                    val1.unscaledValue = new MyBigNumber(val1.multiply(new MyBigNumber("10")).toString()).unscaledValue;
-                    if(val1.point > -1) val1.point--;
-                }
-                val1.unscaledValue = clearZero(val1.unscaledValue);
-                val1.point = -1;
-                for (int i = 0; i < pointMax; i++) {
-                    val2.unscaledValue = new MyBigNumber(val2.multiply(new MyBigNumber("10")).toString()).unscaledValue;
-                    if(val2.point > -1) val2.point--;
-                }
-                val2.unscaledValue = clearZero(val2.unscaledValue);
-                val2.point = -1;
+                multiplyTen(val1, pointMax);
+                multiplyTen(val2, pointMax);
             }
             return pointMax;
+        }
+
+        /**
+         * умножить на 10 pointMax раз
+         */
+        private void multiplyTen(Calculator.MyBigNumber val,
+                                 int pointMax) {
+            for (int i = 0; i < pointMax; i++) {
+                val.unscaledValue = new MyBigNumber(val.multiply(new MyBigNumber("10")).toString()).unscaledValue;
+                if (val.point > -1) {
+                    val.point--;
+                }
+            }
+            val.unscaledValue = clearZero(val.unscaledValue);
+            val.point = -1;
         }
 
         /**
@@ -653,7 +468,7 @@ public final class Calculator {
                 return myBigNumber;
 
             //точка
-            int pointMax = castingToAnInteger(this,myBigNumber);
+            int pointMax = castingToAnInteger(this, myBigNumber);
 
             if (myBigNumber.scale == scale) {
                 return new MyBigNumber(
@@ -677,11 +492,12 @@ public final class Calculator {
         public MyBigNumber subtract(MyBigNumber myBigNumber) {
             if (myBigNumber.scale == 0)
                 return this;
-            if (scale == 0)
-                return myBigNumber;
+            if (scale == 0) {
+                return myBigNumber.multiply(new MyBigNumber("-1"));
+            }
 
             //точка
-            int pointMax = castingToAnInteger(this,myBigNumber);
+            int pointMax = castingToAnInteger(this, myBigNumber);
 
             if (myBigNumber.scale != scale) {
                 return new MyBigNumber(
@@ -693,7 +509,7 @@ public final class Calculator {
 
             int cmp = compareMagnitude(myBigNumber);
             if (cmp == 0) {
-                return new MyBigNumber(0, new char[]{'0'});
+                return new MyBigNumber("0");
             }
             char[] resultMag = (cmp > 0 ? subtract(unscaledValue, myBigNumber.getUnscaledValue())
                     : subtract(myBigNumber.getUnscaledValue(), unscaledValue));
@@ -703,18 +519,19 @@ public final class Calculator {
 
         /**
          * Умножение
+         * this * val
          */
-        //this * val
+        //
         public MyBigNumber multiply(MyBigNumber val) {
 
             int point = -1;
-            if(this.point != -1 && val.point == -1){
+            if (this.point != -1 && val.point == -1) {
                 point = this.point;
             }
-            if(this.point == -1 && val.point != -1){
+            if (this.point == -1 && val.point != -1) {
                 point = val.point;
             }
-            if(this.point != -1 && val.point != -1){
+            if (this.point != -1 && val.point != -1) {
                 point = val.point + this.point;
             }
 
@@ -759,7 +576,7 @@ public final class Calculator {
          */
         public MyBigNumber pow(MyBigNumber val) {
             if (this.scale == 0 || val.scale == 0) {
-                return new MyBigNumber(new char[]{'1'});
+                return new MyBigNumber("1");
             }
             return new MyBigNumber(1, multiply(this.unscaledValue, val.unscaledValue));
         }
@@ -774,25 +591,25 @@ public final class Calculator {
             }
 
             if (this.scale == 0) { //делимое равно 0
-                return new MyBigNumber(0, new char[]{'0'});
+                return new MyBigNumber("0");
             }
 
             int resultScale = this.scale == val.scale ? 1 : -1;
             this.scale = 1;
             val.scale = 1;
 
-            castingToAnInteger(this,val);
+            castingToAnInteger(this, val);
 
             char[] num1 = this.unscaledValue;
             char[] num2 = val.unscaledValue;
             // Выделите пробел для хранения результата операции.
             // Длинное число num1 * Длинное число num2, результат не будет превышать длинную num1 + num2
 
-            MyBigNumber result = new MyBigNumber(0, new char[]{'0'});
+            MyBigNumber result = new MyBigNumber("0");
             int indexPoint = -1;
 
             int indexNum1 = 0;
-            MyBigNumber dividend = new MyBigNumber(0, new char[]{'0'});
+            MyBigNumber dividend = new MyBigNumber("0");
 
             while ((indexNum1 < num1.length || compareMagnitude(dividend.getUnscaledValue(), new char[]{'0'}) != 0) && indexPoint < 9) {
                 //бесплатно
@@ -800,7 +617,7 @@ public final class Calculator {
                     dividend = new MyBigNumber(multiply(dividend.getUnscaledValue(), new char[]{'1', '0'}));
                     indexPoint++;
                 } else {
-                    if (dividend.compareTo(new MyBigNumber(0, new char[]{'0'})) == 0) {
+                    if (dividend.compareTo(new MyBigNumber("0")) == 0) {
                         dividend = new MyBigNumber(new char[]{num1[indexNum1++]});
                     } else {
                         dividend = new MyBigNumber(
@@ -819,19 +636,19 @@ public final class Calculator {
                     }
                 }
 
-                MyBigNumber mnoj = getMnoj(dividend, val);
+                MyBigNumber factor = getFactor(dividend, val);
 
-                dividend = dividend.subtract(val.multiply(mnoj));
+                dividend = dividend.subtract(val.multiply(factor));
 
-                if (result.equals(new MyBigNumber(0, new char[]{'0'}))) {
-                    result.add(mnoj);
+                if (result.equals(new MyBigNumber("0"))) {
+                    result.add(factor);
                 } else {
                     result = new MyBigNumber(
-                            sum(multiply(result.getUnscaledValue(), new char[]{'1', '0'}), mnoj.unscaledValue));
+                            sum(multiply(result.getUnscaledValue(), new char[]{'1', '0'}), factor.unscaledValue));
                 }
             }
 
-            if(indexPoint != -1) {
+            if (indexPoint != -1) {
                 result.point = indexPoint + 1;
             }
 
@@ -842,20 +659,21 @@ public final class Calculator {
         /**
          * Рекурсивный поиск множителя
          */
-        private MyBigNumber getMnoj(MyBigNumber dividend, MyBigNumber divide) {
-            MyBigNumber mnoj = new MyBigNumber(1, new char[]{'1'});
+        private MyBigNumber getFactor(MyBigNumber dividend, MyBigNumber divide) {
+            MyBigNumber factor = new MyBigNumber("1");
 
-            while (compareMagnitude(divide.pow(mnoj.pow(new MyBigNumber(new char[]{'2'}))).getUnscaledValue(), dividend.unscaledValue) < 0) {
-                mnoj = mnoj.pow(new MyBigNumber(new char[]{'2'}));
+            while (compareMagnitude(divide.pow(factor.pow(new MyBigNumber("2"))).getUnscaledValue(), dividend.unscaledValue) < 0) {
+                factor = factor.pow(new MyBigNumber("2"));
             }
 
-            dividend = dividend.subtract(divide.multiply(mnoj));
+
+            dividend = dividend.subtract(divide.multiply(factor));
 
             if (dividend.compareTo(divide) < 0) {
-                return mnoj;
+                return factor;
             }
 
-            return mnoj.add(getMnoj(dividend, divide));
+            return factor.add(getFactor(dividend, divide));
         }
 
         /**

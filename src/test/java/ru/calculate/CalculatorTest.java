@@ -74,7 +74,7 @@ class CalculatorTest {
      * длинные варажения
      */
     @ParameterizedTest()
-    @ValueSource(strings = {/*"10-10-4", "10-4-10+2+2-4", "-10+2+4+-2+2", "10/2+2*3-15", "-4+4+10/2+2*3-15",*/ "10+10/-2+2*3-15"})
+    @ValueSource(strings = {"10-10-4", "10-4-10+2+2-4", "-10+2+4+-2+2", "10/2+2*3-15", "-4+4+10/2+2*3-15", "10+10/-2+2*3-15"})
     void testCalculatorLongExpression(String expression) {
         Calculator calculator = new Calculator(expression);
 
@@ -200,5 +200,20 @@ class CalculatorTest {
         assertThat(thrown).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Not enough characters");
     }
+
+    /**
+     * Тестирование метода calculate()
+     * большие числа
+     */
+    @ParameterizedTest()
+    @ValueSource(strings = {"(20000000000000000000000000-600000000300000000.4)*(8.4-1000000000000000000000.4)*40.3"})
+    void testBigNumbers(String expression) {
+        Calculator calculator = new Calculator(expression);
+
+        String actualSolution = calculator.calculate();
+
+        assertThat(actualSolution).isEqualTo("-805999975819999987903551984073440000096720000128.96");
+    }
+
 
 }
