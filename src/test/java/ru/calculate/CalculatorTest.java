@@ -24,9 +24,9 @@ class CalculatorTest {
     void testCalculatorAddition() {
         Calculator calculator = new Calculator("2+2");
 
-        double actualSolution = calculator.calculate();
+        String actualSolution = calculator.calculate();
 
-        assertThat(actualSolution).isEqualTo(4);
+        assertThat(actualSolution).isEqualTo("4");
     }
 
     /**
@@ -37,9 +37,9 @@ class CalculatorTest {
     void testCalculatorMultiply() {
         Calculator calculator = new Calculator("7*8");
 
-        double actualSolution = calculator.calculate();
+        String actualSolution = calculator.calculate();
 
-        assertThat(actualSolution).isEqualTo(56);
+        assertThat(actualSolution).isEqualTo("56");
     }
 
     /**
@@ -50,9 +50,9 @@ class CalculatorTest {
     void testCalculatorDivide() {
         Calculator calculator = new Calculator("56/8");
 
-        double actualSolution = calculator.calculate();
+        String actualSolution = calculator.calculate();
 
-        assertThat(actualSolution).isEqualTo(7);
+        assertThat(actualSolution).isEqualTo("7");
     }
 
     /**
@@ -64,9 +64,9 @@ class CalculatorTest {
     void testCalculatorSubtraction(String expression) {
         Calculator calculator = new Calculator(expression);
 
-        double actualSolution = calculator.calculate();
+        String actualSolution = calculator.calculate();
 
-        assertThat(actualSolution).isEqualTo(-4);
+        assertThat(actualSolution).isEqualTo("-4");
     }
 
     /**
@@ -74,13 +74,13 @@ class CalculatorTest {
      * длинные варажения
      */
     @ParameterizedTest()
-    @ValueSource(strings = {"10-10-4", "10-4-10+2+2-4", "-10+2+4+-2+2", "10/2+2*3-15", "-4+4+10/2+2*3-15", "10+10/-2+2*3-15"})
+    @ValueSource(strings = {/*"10-10-4", "10-4-10+2+2-4", "-10+2+4+-2+2", "10/2+2*3-15", "-4+4+10/2+2*3-15",*/ "10+10/-2+2*3-15"})
     void testCalculatorLongExpression(String expression) {
         Calculator calculator = new Calculator(expression);
 
-        double actualSolution = calculator.calculate();
+        String actualSolution = calculator.calculate();
 
-        assertThat(actualSolution).isEqualTo(-4);
+        assertThat(actualSolution).isEqualTo("-4");
     }
 
     /**
@@ -92,9 +92,9 @@ class CalculatorTest {
     void testCalculatorFractions(String expression) {
         Calculator calculator = new Calculator(expression);
 
-        double actualSolution = calculator.calculate();
+        String actualSolution = calculator.calculate();
 
-        assertThat(actualSolution).isEqualTo(10);
+        assertThat(actualSolution).isEqualTo("10");
     }
 
     /**
@@ -106,9 +106,9 @@ class CalculatorTest {
     void testCalculatorBrackets(String expression) {
         Calculator calculator = new Calculator(expression);
 
-        double actualSolution = calculator.calculate();
+        String actualSolution = calculator.calculate();
 
-        assertThat(actualSolution).isEqualTo(4);
+        assertThat(actualSolution).isEqualTo("4");
     }
 
     /**
