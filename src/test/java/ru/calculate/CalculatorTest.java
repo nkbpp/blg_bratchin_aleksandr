@@ -215,5 +215,150 @@ class CalculatorTest {
         assertThat(actualSolution).isEqualTo("-805999975819999987903551984073440000096720000128.96");
     }
 
+    /**
+     * Тестирование метода calculate()
+     * Параметры
+     */
+    @ParameterizedTest()
+    @ValueSource(strings = {"x0+x1"})
+    void testCalculatorCalculateWithParams(String expression) {
+        Calculator calculator = new Calculator(expression);
+
+        String actualSolution = calculator.calculate("2", "5");
+
+        assertThat(actualSolution).isEqualTo("7");
+    }
+
+    /**
+     * Тестирование метода calculate()
+     * Папаметры
+     */
+    @ParameterizedTest()
+    @ValueSource(strings = {"x0+x1"})
+    void testCalculatorCalculateWithParamNoParam(String expression) {
+        Calculator calculator = new Calculator(expression);
+
+        Throwable thrown = catchThrowable(() -> calculator.calculate("2"));
+
+        assertThat(thrown).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("No param");
+    }
+
+    /**
+     * Тестирование метода calculate()
+     * Параметры в функциях
+     */
+    @ParameterizedTest()
+    @ValueSource(strings = {"pow(x0+x1,x2+x2)+x3"})
+    void testCalculatorFunctionsAndParams(String expression) {
+        Calculator calculator = new Calculator(expression);
+
+        String actualSolution = calculator.calculate("2", "3", "1", "25");
+
+        assertThat(actualSolution).isEqualTo("35");
+    }
+
+    /**
+     * Тестирование метода calculate()
+     * Функции
+     */
+    @ParameterizedTest()
+    @ValueSource(strings = {"pow(2+3,1+1)+25"})
+    void testCalculatorFunctions(String expression) {
+        Calculator calculator = new Calculator(expression);
+        MyBigNumber five = new MyBigNumber("5");
+        calculator.addFunction("asd", myBigNumber -> myBigNumber.multiply(five));
+
+        String actualSolution = calculator.calculate();
+
+        assertThat(actualSolution).isEqualTo("35");
+    }
+
+    /**
+     * Тестирование метода calculate()
+     * Добавление новых функций
+     */
+    @ParameterizedTest()
+    @ValueSource(strings = {"asd(2+5)-asd(7)+35", "asd(2+5)", "35+asd(2+5)-asd(7)"})
+    void testCalculatorAddFunctions(String expression) {
+        Calculator calculator = new Calculator(expression);
+        MyBigNumber five = new MyBigNumber("5");
+        calculator.addFunction("asd", myBigNumber -> myBigNumber.multiply(five));
+
+        String actualSolution = calculator.calculate();
+
+        assertThat(actualSolution).isEqualTo("35");
+    }
+
+
+    /**
+     * Тестирование метода calculate()
+     * Функция синуса
+     */
+    @ParameterizedTest()
+    @ValueSource(strings = {"sin(2)"})
+    void testCalculatorFunctionsSin(String expression) {
+        Calculator calculator = new Calculator(expression);
+
+        String actualSolution = calculator.calculate();
+
+        assertThat(actualSolution).startsWith("0.9092");
+    }
+
+    /**
+     * Тестирование метода calculate()
+     * Функция косинуса
+     */
+    @ParameterizedTest()
+    @ValueSource(strings = {"cos(2)"})
+    void testCalculatorFunctionsCos(String expression) {
+        Calculator calculator = new Calculator(expression);
+
+        String actualSolution = calculator.calculate();
+
+        assertThat(actualSolution).startsWith("-0.4161");
+    }
+
+    /**
+     * Тестирование метода calculate()
+     * Функция квадратного корня
+     */
+    @ParameterizedTest()
+    @ValueSource(strings = {"sqrt(25)"})
+    void testCalculatorFunctionsSqrt(String expression) {
+        Calculator calculator = new Calculator(expression);
+
+        String actualSolution = calculator.calculate();
+
+        assertThat(actualSolution).startsWith("5");
+    }
+
+    /**
+     * Тестирование метода calculate()
+     * Функция тангенса
+     */
+    @ParameterizedTest()
+    @ValueSource(strings = {"tg(2)"})
+    void testCalculatorFunctionsTg(String expression) {
+        Calculator calculator = new Calculator(expression);
+
+        String actualSolution = calculator.calculate();
+
+        assertThat(actualSolution).startsWith("-2.1850");
+    }
+
+    /**
+     * Тестирование метода calculate()
+     * Функция котангенса
+     */
+    @ParameterizedTest()
+    @ValueSource(strings = {"ctg(2)"})
+    void testCalculatorFunctionsCtg(String expression) {
+        Calculator calculator = new Calculator(expression);
+
+        String actualSolution = calculator.calculate();
+
+        assertThat(actualSolution).startsWith("-0.4576");
+    }
 
 }
