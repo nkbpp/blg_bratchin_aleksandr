@@ -1,0 +1,181 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://package.ru"
+           xmlns="http://package.ru"
+           elementFormDefault="qualified"
+>
+
+    <xs:element name="package">
+        <xs:annotation>
+            <xs:appinfo>Пакет вопросов</xs:appinfo>
+            <xs:documentation>Родительский элемент. В данном элементе содержится раунды</xs:documentation>
+        </xs:annotation>
+
+        <xs:complexType>
+            <xs:sequence>
+
+                <xs:element name="namePackage" type="xs:string"><!--Название пакета-->
+                    <xs:annotation>
+                        <xs:appinfo>Название пакета</xs:appinfo>
+                        <xs:documentation>Название пакета</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+
+                <xs:element name="round">
+                    <xs:complexType>
+                        <xs:sequence>
+
+                            <xs:element name="quest" type="questData" maxOccurs="unbounded">
+                                <xs:annotation>
+                                    <xs:appinfo>Вопрос</xs:appinfo>
+                                    <xs:documentation>В данном элементе содержится данные о вопросе</xs:documentation>
+                                </xs:annotation>
+
+                                <xs:unique name="IdQuest">
+                                    <xs:selector xpath="./*"/>
+                                    <xs:field xpath="@id_quest"/>
+                                </xs:unique>
+                            </xs:element>
+
+                            <xs:element name="theme" type="xs:string"><!--Тема уровня-->
+                                <xs:annotation>
+                                    <xs:appinfo>Тема раунда</xs:appinfo>
+                                    <xs:documentation>В данном элементе содержится название раунда</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+
+                            <xs:element name="level"><!--Уровень сложности-->
+                                <xs:annotation>
+                                    <xs:appinfo>Уровень сложности</xs:appinfo>
+                                    <xs:documentation>В данном элементе содержатся варианты сложности раунда</xs:documentation>
+                                </xs:annotation>
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:enumeration value="Простой"/>
+                                        <xs:enumeration value="Средний"/>
+                                        <xs:enumeration value="Сложный"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+
+                        </xs:sequence>
+
+                        <xs:attribute name="id_round" type="xs:positiveInteger" use="required"/>
+
+                    </xs:complexType>
+                    <xs:unique name="IdRound">
+                        <xs:selector xpath="./*"/>
+                        <xs:field xpath="@id_round"/>
+                    </xs:unique>
+                </xs:element>
+
+                <xs:element name="numberOfRounds" type="xs:positiveInteger"><!--Количество раундов-->
+                    <xs:annotation>
+                        <xs:appinfo>Количество раундов в пакете</xs:appinfo>
+                        <xs:documentation>Количество раундов в пакете</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="questData">
+        <xs:sequence>
+
+            <xs:element name="text_quest" type="xs:string"><!--Вопрос-->
+                <xs:annotation>
+                    <xs:appinfo>Текст вопроса</xs:appinfo>
+                    <xs:documentation>В данном элементе содержится текст вопроса</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+
+            <xs:element name="answers"><!--ответы-->
+                <xs:annotation>
+                    <xs:appinfo>Ответы</xs:appinfo>
+                    <xs:documentation>Список верных ответов</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element  name="answer" maxOccurs="unbounded" >
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:string">
+                                        <xs:attribute type="xs:positiveInteger" name="id_answer" use="required"/>
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+                <xs:unique name="IdAnswer">
+                    <xs:selector xpath="./*"/>
+                    <xs:field xpath="@id_answer"/>
+                </xs:unique>
+            </xs:element>
+
+            <xs:element name="comment" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:appinfo>Комментарий</xs:appinfo>
+                    <xs:documentation>Комментарий или пояснение к вопросу (может отсутствовать)</xs:documentation>
+                </xs:annotation>
+            </xs:element><!--Комментарии к вопросу-->
+
+            <xs:element name="links" minOccurs="0"><!--Ссылки на источники-->
+                <xs:annotation>
+                    <xs:appinfo>Ссылки на источники</xs:appinfo>
+                    <xs:documentation>Ссылки на источники (может отсутствовать)</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element  name="link" minOccurs="0" maxOccurs="unbounded" >
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:string">
+                                        <xs:attribute type="xs:positiveInteger" name="id_link" use="required"/>
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+                <xs:unique name="IdLink">
+                    <xs:selector xpath="./*"/>
+                    <xs:field xpath="@id_link"/>
+                </xs:unique>
+            </xs:element>
+
+            <xs:element name="wrong_answers" minOccurs="0"><!--неверные варианты ответа-->
+                <xs:annotation>
+                    <xs:appinfo>Неверные варианты ответа</xs:appinfo>
+                    <xs:documentation>Список не верных ответов (может отсутствовать)</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element  name="wrong_answer" minOccurs="0" maxOccurs="unbounded" >
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:string">
+                                        <xs:attribute type="xs:positiveInteger" name="id_wrong_answer" use="required"/>
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+
+                <xs:unique name="IdWrongAnswer">
+                    <xs:selector xpath="./*"/>
+                    <xs:field xpath="@id_wrong_answer"/>
+                </xs:unique>
+            </xs:element>
+
+        </xs:sequence>
+        <xs:attribute name="id_query" type="xs:positiveInteger" use="required"></xs:attribute>
+    </xs:complexType>
+
+</xs:schema>
+
+

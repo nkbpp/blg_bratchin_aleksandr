@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<package xmlns="http://package.ru"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://package.ru package.xsd">
+
+    <namePackage>Пакет 1</namePackage>
+
+    <round id_round="16">
+
+        <quest id_query="1">
+
+            <text_quest>Зимой и летом одним цветом</text_quest>
+
+            <answers>
+                <answer id_answer="2">Елка</answer>
+                <answer id_answer="4">Ёлка</answer>
+            </answers>
+
+            <comment>Народное творчество</comment>
+
+            <links>
+                <link id_link="1">
+                    https://mirchild.com
+                </link>
+                <link id_link="18">
+                    https://ya.ru
+                </link>
+            </links>
+
+
+
+            <wrong_answers>
+                <wrong_answer id_wrong_answer="1">
+                    Небо
+                </wrong_answer>
+                <wrong_answer id_wrong_answer="4">
+                    Человек
+                </wrong_answer>
+                <wrong_answer id_wrong_answer="10">
+                    Листья
+                </wrong_answer>
+            </wrong_answers>
+
+        </quest>
+
+        <quest id_query="2">
+
+            <text_quest>Белые овечки бегают по свечке.</text_quest>
+
+            <answers>
+                <answer id_answer="10">
+                    Верба
+                </answer>
+            </answers>
+
+            <comment>Народное творчество</comment>
+
+            <links>
+                <link id_link="1">
+                    https://mirchild.com
+                </link>
+            </links>
+
+            <wrong_answers>
+                <wrong_answer id_wrong_answer="1">
+                    Туя
+                </wrong_answer>
+                <wrong_answer id_wrong_answer="2">
+                    Ёлка
+                </wrong_answer>
+                <wrong_answer id_wrong_answer="11">
+                    Тополь
+                </wrong_answer>
+            </wrong_answers>
+
+        </quest>
+
+
+        <theme>Деревья</theme>
+
+        <level>Простой</level>
+
+    </round>
+
+    <numberOfRounds>1</numberOfRounds>
+
+</package>
