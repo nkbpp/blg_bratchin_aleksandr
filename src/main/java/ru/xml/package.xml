@@ -7,7 +7,7 @@
 
     <round id_round="16">
 
-        <quest id_query="1">
+        <quest id_quest="1">
 
             <text_quest>Зимой и летом одним цветом</text_quest>
 
@@ -43,7 +43,7 @@
 
         </quest>
 
-        <quest id_query="2">
+        <quest id_quest="2">
 
             <text_quest>Белые овечки бегают по свечке.</text_quest>
 

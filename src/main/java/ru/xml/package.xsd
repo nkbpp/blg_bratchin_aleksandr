@@ -173,7 +173,7 @@
             </xs:element>
 
         </xs:sequence>
-        <xs:attribute name="id_query" type="xs:positiveInteger" use="required"></xs:attribute>
+        <xs:attribute name="id_quest" type="xs:positiveInteger" use="required"></xs:attribute>
     </xs:complexType>
 
 </xs:schema>

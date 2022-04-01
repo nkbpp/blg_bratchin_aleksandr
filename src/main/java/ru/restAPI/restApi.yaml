@@ -1,0 +1,185 @@
+openapi: 3.0.2
+info:
+  title: Quest API
+  description: "Добавить описание" #######################
+  version: 1.0.0
+servers:
+- url: https://quest
+paths:
+
+  /delete/{questId}:    
+    delete:
+      tags:
+      - Вопрос
+      summary: Удалить вопрос
+      description: ""
+      operationId: deleteQuest
+      parameters:
+      - name: questId
+        in: path
+        description: ID вопроса, который нужно удалить
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        400:
+          description: Указан неверный идентификатор
+          content: {}
+        404:
+          description: Питомец не найден
+          content: {}
+  
+  /find/{questId}: 
+    get:
+      tags:
+      - Вопрос
+      summary: Найти вопрос по ID
+      description: Возвращает один вопрос
+      operationId: getQuestById
+      parameters:
+      - name: questId
+        in: path
+        description: ID вопроса, который нужно вернуть
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: успешная операция
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Quest'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quest'
+        400:
+          description: Указан неверный идентификатор
+          content: {}
+        404:
+          description: Вопрос не найден
+          content: {}
+          
+  /update: 
+    put:
+      tags:
+      - Вопрос
+      summary: Обновить существующий вопрос
+      operationId: updateQuest
+      requestBody:
+        description: Вопрос, который нужно добавить
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Quest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Quest'
+        required: true
+      responses:
+        400:
+          description: Указан неверный идентификатор
+          content: {}
+        404:
+          description: Вопрос не найден
+          content: {}
+        405:
+          description: Ошибка валидации
+          content: {}
+      
+  /add:
+    post:
+      tags:
+      - Вопрос
+      summary: Добавление вопроса
+      operationId: addQuest
+      requestBody:
+        description: Вопрос, который нужно добавить
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Quest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Quest'
+        required: true
+      responses:
+        405:
+          description: Некорректный ввод
+          content: {}
+          
+          
+          
+components:
+  schemas:
+    Answer:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        answer:
+          type: string
+    Link:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        link:
+          type: string
+    Theme:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        Theme:
+          type: string
+    Quest:
+      required:
+      - name
+      - photoUrls
+      type: object
+      properties:
+        quest_id:
+          type: integer
+          format: int64
+        text_quest:
+          type: string
+          example: какой то текст ###############
+        comments:
+          type: string
+          example: какой то текст ###############
+        level:
+          type: string
+          description: Сложность вопроса
+          enum:
+          - Простой
+          - Средний
+          - Сложный
+        correct_answer:
+          type: array
+          #xml:
+            #answer: tag
+          items:
+            $ref: '#/components/schemas/Answer'
+        wrong_answer:
+          type: array
+          items:
+            $ref: '#/components/schemas/Answer'
+        link:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+        theme:
+          type: array
+          items:
+            $ref: '#/components/schemas/Theme'
+            
+      xml:
+        name: Quest
+        ###########
+    
