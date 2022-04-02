@@ -1,0 +1,350 @@
+openapi: 3.0.2
+info:
+  title: Quest API
+  description: API описывающий основные операции над вопросами (Quest) и возвращение пакета вопросов (Paskage)
+  version: 1.0.0
+servers:
+  - url: https://quest
+paths:
+
+  /quest/{questId}:
+    delete:
+      tags:
+        - Вопрос
+      summary: Удалить вопрос
+      description: Удалить вопрос по ID
+      operationId: deleteQuest
+      parameters:
+        - name: questId
+          in: path
+          description: ID вопроса, который нужно удалить
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        400:
+          description: Указан неверный идентификатор
+          content: {}
+        404:
+          description: Питомец не найден
+          content: {}
+    get:
+      tags:
+        - Вопрос
+      summary: Найти вопрос по ID
+      description: Возвращает один вопрос
+      operationId: getQuestById
+      parameters:
+        - name: questId
+          in: path
+          description: ID вопроса, который нужно вернуть
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Успешная операция
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Quest'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quest'
+        400:
+          description: Указан неверный идентификатор
+          content: {}
+        404:
+          description: Вопрос не найден
+          content: {}
+
+  /quest:
+    put:
+      tags:
+        - Вопрос
+      summary: Обновить существующий вопрос
+      operationId: updateQuest
+      requestBody:
+        description: Вопрос, который нужно добавить
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Quest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Quest'
+        required: true
+      responses:
+        400:
+          description: Указан неверный идентификатор
+          content: {}
+        404:
+          description: Вопрос не найден
+          content: {}
+        405:
+          description: Ошибка валидации
+          content: {}
+    post:
+      tags:
+        - Вопрос
+      summary: Добавление вопроса
+      operationId: addQuest
+      requestBody:
+        description: Вопрос, который нужно добавить
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Quest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Quest'
+        required: true
+      responses:
+        405:
+          description: Некорректный ввод
+          content: {}
+
+  /quest/findByParams:
+    get:
+      tags:
+        - Вопрос
+      summary: Поиск вопроса по параметрам
+      description: Поиск по ответам, уровню сложности, теме
+      operationId: findByParams
+      parameters:
+        - name: answer
+          in: query
+          description: Значения ответа на вопрос, которые необходимо учитывать для фильтрации
+          required: true
+          schema:
+            type: string
+        - name: level
+          in: query
+          description: Значения сложности вопроса, которые необходимо учитывать для фильтрации
+          required: false
+          style: form
+          schema:
+            type: array
+            items:
+              type: string
+              default: Простой
+              enum:
+                - Простой
+                - Средний
+                - Сложный
+        - name: themeIds
+          in: query
+          description: Id тем вопроса, которые необходимо учитывать для фильтрации
+          required: false
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int64
+      responses:
+        200:
+          description: Успешная операция
+          content:
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Quest'
+                xml:          
+                  name: Quest
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Quest'
+        400:
+          description: Неверное значение параметров
+          content: {}
+          
+  /quest/paskage:
+    get:
+      tags:
+        - Пакет вопросов
+      summary: Получить пакет по параметрам
+      description: Возвращает пакет с вопросов
+      operationId: createPaskage
+      parameters:
+        - name: name
+          in: query
+          description: Название пакета
+          required: true
+          schema:
+            type: string
+        - name: author
+          in: query
+          description: Автор пакета
+          required: false
+          schema:
+            type: string
+        - name: info
+          in: query
+          description: Информация о пакете
+          required: false
+          schema:
+            type: string    
+        - name: rounds
+          in: query
+          description: Параметры раундов
+          required: true
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                index:
+                  description: Порядок раундов
+                  type: integer
+                  format: int64
+                count:
+                  description: Количество вопросов в раунде
+                  type: integer
+                  format: int64
+                name:
+                  description: Название раунда
+                  type: string
+                level:
+                  type: string
+                  description: Сложность вопросов в раунде
+                  enum:
+                  - Простой
+                  - Средний
+                  - Сложный
+        
+      responses:
+        200:
+          description: Успешная операция
+          content:
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Paskage'
+                xml:          
+                  name: Paskage
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Paskage'
+        400:
+          description: Неверное значение параметров
+          content: {}
+
+
+components:
+  schemas:
+    Paskage:
+      type: object
+      properties:
+        paskage_id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        info:
+          type: string
+        author:
+          type: string
+        date:
+          type: string
+          format: date-time
+        round:
+          type: array
+          items:
+            $ref: '#/components/schemas/Round'
+      xml:
+        name: Paskage
+    Round:
+      type: object
+      properties:
+        round_id:
+          type: integer
+          format: int64
+        index:
+          type: integer
+          format: int64
+        name:
+          type: string
+        quest:
+          type: array
+          items:
+            $ref: '#/components/schemas/Quest'
+      xml:
+        name: Round
+    Answer:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        answer:
+          type: string
+      xml:
+        name: Answer
+    Link:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        link:
+          type: string
+      xml:
+        name: Link
+    Theme:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        Theme:
+          type: string
+      xml:
+        name: Theme
+    Quest:
+      required:
+        - name
+        - photoUrls
+      type: object
+      properties:
+        quest_id:
+          type: integer
+          format: int64
+        text_quest:
+          type: string
+          example: Зимой и летом одним цветом
+        comments:
+          type: string
+          example: Русская народная загадка
+        level:
+          type: string
+          description: Сложность вопроса
+          enum:
+            - Простой
+            - Средний
+            - Сложный
+        correct_answer:
+          type: array
+          items:
+            $ref: '#/components/schemas/Answer'
+        wrong_answer:
+          type: array
+          items:
+            $ref: '#/components/schemas/Answer'
+        link:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+        theme:
+          type: array
+          items:
+            $ref: '#/components/schemas/Theme'
+      xml:
+        name: Quest
