@@ -32,18 +32,18 @@ public class QuestController {
     /**
      * Удалить вопрос
      */
-    @DeleteMapping("/{questID}")
-    public ResponseEntity deletteQuest(@PathVariable("questID") long questID) {
-        questService.delete(questID);
+    @DeleteMapping("/{questId}")
+    public ResponseEntity deletteQuest(@PathVariable("questId") long questId) {
+        questService.delete(questId);
         return ResponseEntity.ok().build();
     }
 
     /**
      * Найти вопрос по ID
      */
-    @GetMapping(path = "/{questID}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Quest getQuestById(@PathVariable("questID") Long questID) {
-        return questService.getById(questID);
+    @GetMapping(path = "/{questId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Quest getQuestById(@PathVariable("questId") Long questId) {
+        return questService.getById(questId);
     }
 
     /**
@@ -86,7 +86,7 @@ public class QuestController {
     /**
      * Получить пакет по параметрам
      */
-    @GetMapping(value = "/package", produces = MediaType.APPLICATION_XML_VALUE)
+    @GetMapping(value = "/paskage", produces = MediaType.APPLICATION_XML_VALUE)
     public HttpEntity<byte[]> createPaskage(@RequestParam(value = "name") String name,
                                             @RequestParam(value = "author") String author,
                                             @RequestParam(value = "info", required = false) String info,
@@ -106,8 +106,6 @@ public class QuestController {
         header.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + "xml");
         header.setContentLength(arr.length);
         return new HttpEntity<>(arr, header);
-
-        //return new Package(name, author, info, roundService.toEntity(roundsDtos));
     }
 
 }

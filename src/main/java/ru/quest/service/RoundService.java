@@ -29,7 +29,7 @@ public class RoundService {
                     .stream()
                     .filter(quest -> ids
                             .stream()
-                            .noneMatch(aLong -> quest.getQuest_id().equals(aLong))
+                            .noneMatch(aLong -> quest.getQuestId().equals(aLong))
                     )
                     .limit(roundsDto.getCount()).toList();
 
@@ -38,7 +38,7 @@ public class RoundService {
             //индексы вопросов которые уже были добавлены
             for (Quest quest:
                 filterQuest) {
-                ids.add(quest.getQuest_id());
+                ids.add(quest.getQuestId());
             }
 
         }

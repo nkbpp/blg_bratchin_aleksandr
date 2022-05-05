@@ -12,12 +12,12 @@ public class QuestSpecification implements Specification<Quest>{
 
 
     public QuestSpecification(Quest quest) {
-        this.id = quest.getQuest_id();
+        this.id = quest.getQuestId();
     }
 
     @Override
     public boolean specified(Quest quest) {
-        return id.equals(quest.getQuest_id());
+        return id.equals(quest.getQuestId());
     }
 
 }

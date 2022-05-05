@@ -5,9 +5,9 @@ import java.util.Objects;
 
 public class Quest {
 
-    private Long quest_id;
+    private Long questId;
 
-    private String text_quest;
+    private String textQuest;
 
     private String comment;
 
@@ -22,9 +22,9 @@ public class Quest {
     public Quest() {
     }
 
-    public Quest(Long quest_id, String text_quest, String comment, Level level, List<Answer> answers, List<Link> links, List<Theme> themes) {
-        this.quest_id = quest_id;
-        this.text_quest = text_quest;
+    public Quest(Long questId, String textQuest, String comment, Level level, List<Answer> answers, List<Link> links, List<Theme> themes) {
+        this.questId = questId;
+        this.textQuest = textQuest;
         this.comment = comment;
         this.level = level;
         this.answers = answers;
@@ -32,20 +32,20 @@ public class Quest {
         this.themes = themes;
     }
 
-    public Long getQuest_id() {
-        return quest_id;
+    public Long getQuestId() {
+        return questId;
     }
 
-    public void setQuest_id(Long quest_id) {
-        this.quest_id = quest_id;
+    public void setQuestId(Long questId) {
+        this.questId = questId;
     }
 
-    public String getText_quest() {
-        return text_quest;
+    public String getTextQuest() {
+        return textQuest;
     }
 
-    public void setText_quest(String text_quest) {
-        this.text_quest = text_quest;
+    public void setTextQuest(String textQuest) {
+        this.textQuest = textQuest;
     }
 
     public String getComment() {
@@ -94,17 +94,17 @@ public class Quest {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Quest quest = (Quest) o;
-        return Objects.equals(quest_id, quest.quest_id) && Objects.equals(text_quest, quest.text_quest) && Objects.equals(comment, quest.comment) && level == quest.level && Objects.equals(answers, quest.answers) && Objects.equals(links, quest.links) && Objects.equals(themes, quest.themes);
+        return Objects.equals(questId, quest.questId) && Objects.equals(textQuest, quest.textQuest) && Objects.equals(comment, quest.comment) && level == quest.level && Objects.equals(answers, quest.answers) && Objects.equals(links, quest.links) && Objects.equals(themes, quest.themes);
     }
 
     @Override
     public int hashCode() {
-        return (int)(long) quest_id;
+        return (int)(long) questId;
     }
 
     public void setQuest(Quest quest) {
-        this.setQuest_id(quest.getQuest_id());
-        this.setText_quest(quest.getText_quest());
+        this.setQuestId(quest.getQuestId());
+        this.setTextQuest(quest.getTextQuest());
         this.setComment(quest.getComment());
         this.setLevel(quest.getLevel());
         this.setAnswers(quest.getAnswers());

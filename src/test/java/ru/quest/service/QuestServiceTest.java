@@ -19,7 +19,7 @@ class QuestServiceTest {
 
         Quest quests = questService.getById(1L);
 
-        assertThat(quests.getQuest_id()).isEqualTo(1L);
+        assertThat(quests.getQuestId()).isEqualTo(1L);
     }
 
     @Test
