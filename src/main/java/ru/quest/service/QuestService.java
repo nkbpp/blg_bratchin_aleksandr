@@ -1,7 +1,6 @@
 package ru.quest.service;
 
 import org.springframework.stereotype.Service;
-import ru.quest.dto.QuestDto;
 import ru.quest.exeptions.NotFoundException;
 import ru.quest.model.Level;
 import ru.quest.model.Quest;

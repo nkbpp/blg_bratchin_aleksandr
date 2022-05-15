@@ -85,4 +85,42 @@ public class Round {
     public int hashCode() {
         return (int)(long)round_id;
     }
+
+    public static Builder builder() {
+        return new Round().new Builder();
+    }
+
+    public class Builder {
+
+        private Builder() {
+            // private constructor
+        }
+
+        public Builder setRound_id(Long round_id) {
+            Round.this.round_id = round_id;
+            return this;
+        }
+        public Builder setName(String name) {
+            Round.this.name = name;
+            return this;
+        }
+        public Builder setIndex(Integer index) {
+            Round.this.index = index;
+            return this;
+        }
+        public Builder setQuests(List<Quest> quests) {
+            Round.this.quests = quests;
+            return this;
+        }
+        public Builder setThemes(List<Theme> themes) {
+            Round.this.themes = themes;
+            return this;
+        }
+
+        public Round build() {
+            return Round.this;
+        }
+
+    }
+
 }

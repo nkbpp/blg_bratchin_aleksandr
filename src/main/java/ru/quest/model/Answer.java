@@ -57,4 +57,33 @@ public class Answer {
     public int hashCode() {
         return (int)(long)answer_id;
     }
+
+    public static Builder builder() {
+        return new Answer().new Builder();
+    }
+
+    public class Builder {
+
+        private Builder() {
+            // private constructor
+        }
+        public Builder setAnswer_id(Long answer_id) {
+            Answer.this.answer_id = answer_id;
+            return this;
+        }
+        public Builder setAnswer(String answer) {
+            Answer.this.answer = answer;
+            return this;
+        }
+        public Builder setCorrect_answer(Boolean correct_answer) {
+            Answer.this.correct_answer = correct_answer;
+            return this;
+        }
+
+        public Answer build() {
+            return Answer.this;
+        }
+
+    }
+
 }

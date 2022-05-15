@@ -2,15 +2,17 @@ package ru.quest.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.quest.dto.QuestDto;
 import ru.quest.dto.RoundsDto;
-import ru.quest.model.*;
+import ru.quest.mapper.QuestMapper;
+import ru.quest.model.Level;
 import ru.quest.model.Package;
+import ru.quest.model.Quest;
 import ru.quest.service.QuestService;
 import ru.quest.service.RoundService;
 
@@ -23,10 +25,12 @@ public class QuestController {
 
     private final QuestService questService;
     private final RoundService roundService;
+    private final QuestMapper questMapper;
 
-    public QuestController(QuestService questService, RoundService roundService) {
+    public QuestController(QuestService questService, RoundService roundService, QuestMapper questMapper) {
         this.questService = questService;
         this.roundService = roundService;
+        this.questMapper = questMapper;
     }
 
     /**
@@ -58,8 +62,8 @@ public class QuestController {
      * Обновить существующий вопрос
      */
     @PutMapping()
-    public ResponseEntity updateQuest(@RequestBody Quest quest) {
-        questService.update(quest);
+    public ResponseEntity updateQuest(@RequestBody QuestDto questDto) {
+        questService.update(questMapper.fromDto(questDto));
         return ResponseEntity.ok().build();
     }
 
@@ -67,8 +71,8 @@ public class QuestController {
      * Добавление вопроса
      */
     @PostMapping()
-    public ResponseEntity addQuest(@RequestBody Quest quest) {
-        questService.save(quest);
+    public ResponseEntity addQuest(@RequestBody QuestDto questDto) {
+        questService.save(questMapper.fromDto(questDto));
         return ResponseEntity.ok().build();
     }
 
@@ -95,7 +99,13 @@ public class QuestController {
         XmlMapper xmlMapper = new XmlMapper();
         String xml;
         try {
-            xml = xmlMapper.writeValueAsString(new Package(name, author, info, roundService.toEntity(roundsDtos)));
+            xml = xmlMapper.writeValueAsString(Package.builder()
+                    .setName(name)
+                    .setAuthor(author)
+                    .setInfo(info)
+                    .setRounds(roundService.toEntity(roundsDtos))
+                    .build()
+            );
         } catch (JsonProcessingException e) {
             throw new RuntimeException("failed to convert to xml");
         }

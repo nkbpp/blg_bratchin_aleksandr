@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Package {
 
-    private Long paskage_id;
+    private Long package_id;
 
     private String name;
 
@@ -15,8 +15,8 @@ public class Package {
 
     private List<Round> rounds;
 
-    public Package(Long paskage_id, String name, String info, String author, List<Round> rounds) {
-        this.paskage_id = paskage_id;
+    public Package(Long package_id, String name, String info, String author, List<Round> rounds) {
+        this.package_id = package_id;
         this.name = name;
         this.info = info;
         this.author = author;
@@ -34,12 +34,12 @@ public class Package {
 
     }
 
-    public Long getPaskage_id() {
-        return paskage_id;
+    public Long getPackage_id() {
+        return package_id;
     }
 
-    public void setPaskage_id(Long paskage_id) {
-        this.paskage_id = paskage_id;
+    public void setPackage_id(Long package_id) {
+        this.package_id = package_id;
     }
 
     public String getName() {
@@ -79,11 +79,49 @@ public class Package {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Package aPackage = (Package) o;
-        return Objects.equals(paskage_id, aPackage.paskage_id) && Objects.equals(name, aPackage.name) && Objects.equals(info, aPackage.info) && Objects.equals(author, aPackage.author) && Objects.equals(rounds, aPackage.rounds);
+        return Objects.equals(package_id, aPackage.package_id) && Objects.equals(name, aPackage.name) && Objects.equals(info, aPackage.info) && Objects.equals(author, aPackage.author) && Objects.equals(rounds, aPackage.rounds);
     }
 
     @Override
     public int hashCode() {
-        return (int)(long) paskage_id;
+        return (int)(long) package_id;
     }
+
+    public static Builder builder() {
+        return new Package().new Builder();
+    }
+
+    public class Builder {
+
+        private Builder() {
+            // private constructor
+        }
+
+        public Builder setPackage_id(Long paskage_id) {
+            Package.this.package_id = paskage_id;
+            return this;
+        }
+        public Builder setName(String name) {
+            Package.this.name = name;
+            return this;
+        }
+        public Builder setInfo(String info) {
+            Package.this.info = info;
+            return this;
+        }
+        public Builder setAuthor(String author) {
+            Package.this.author = author;
+            return this;
+        }
+        public Builder setRounds(List<Round> rounds) {
+            Package.this.rounds = rounds;
+            return this;
+        }
+
+        public Package build() {
+            return Package.this;
+        }
+
+    }
+
 }

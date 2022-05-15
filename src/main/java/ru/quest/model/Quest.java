@@ -111,4 +111,56 @@ public class Quest {
         this.setLinks(quest.getLinks());
         this.setThemes(quest.getThemes());
     }
+
+    public static Builder builder() {
+        return new Quest().new Builder();
+    }
+
+    public class Builder {
+
+        private Builder() {
+            // private constructor
+        }
+
+        public Builder setQuestId(Long questId) {
+            Quest.this.questId = questId;
+            return this;
+        }
+
+        public Builder setTextQuest(String textQuest) {
+            Quest.this.textQuest = textQuest;
+            return this;
+        }
+
+        public Builder setComment(String comment) {
+            Quest.this.comment = comment;
+            return this;
+        }
+
+        public Builder setLevel(Level level) {
+            Quest.this.level = level;
+            return this;
+        }
+
+        public Builder setAnswers(List<Answer> answers) {
+            Quest.this.answers = answers;
+            return this;
+        }
+
+        public Builder setLinks(List<Link> links) {
+            Quest.this.links = links;
+            return this;
+        }
+
+        public Builder setThemes(List<Theme> themes) {
+            Quest.this.themes = themes;
+            return this;
+        }
+
+        public Quest build() {
+            return Quest.this;
+        }
+
+    }
+
 }
