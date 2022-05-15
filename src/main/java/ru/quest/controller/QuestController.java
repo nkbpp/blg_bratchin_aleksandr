@@ -90,8 +90,8 @@ public class QuestController {
     /**
      * Получить пакет по параметрам
      */
-    @GetMapping(value = "/paskage", produces = MediaType.APPLICATION_XML_VALUE)
-    public HttpEntity<byte[]> createPaskage(@RequestParam(value = "name") String name,
+    @GetMapping(value = "/package", produces = MediaType.APPLICATION_XML_VALUE)
+    public HttpEntity<byte[]> createPackage(@RequestParam(value = "name") String name,
                                             @RequestParam(value = "author") String author,
                                             @RequestParam(value = "info", required = false) String info,
                                             @RequestBody() List<RoundsDto> roundsDtos) {
