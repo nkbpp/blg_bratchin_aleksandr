@@ -1,7 +1,5 @@
 package ru.quest.dto;
 
-import ru.quest.model.Round;
-
 import java.util.List;
 
 public class PackageDto {
@@ -14,7 +12,7 @@ public class PackageDto {
 
     private String author;
 
-    private List<Round> rounds;
+    private List<RoundDto> rounds;
 
     public PackageDto() {
     }
@@ -51,11 +49,11 @@ public class PackageDto {
         this.author = author;
     }
 
-    public List<Round> getRounds() {
+    public List<RoundDto> getRounds() {
         return rounds;
     }
 
-    public void setRounds(List<Round> rounds) {
+    public void setRounds(List<RoundDto> rounds) {
         this.rounds = rounds;
     }
 

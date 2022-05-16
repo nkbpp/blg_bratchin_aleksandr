@@ -99,7 +99,7 @@ public class Quest {
 
     @Override
     public int hashCode() {
-        return (int)(long) questId;
+        return Objects.hash(questId, textQuest, comment, level, answers, links, themes);
     }
 
     public void setQuest(Quest quest) {

@@ -13,9 +13,9 @@ public class RoundDto {
 
     private Integer index;
 
-    private List<Quest> quests;
+    private List<QuestDto> quests;
 
-    private List<Theme> themes;
+    private List<ThemeDto> themes;
 
     public RoundDto() {
     }
@@ -44,20 +44,19 @@ public class RoundDto {
         this.index = index;
     }
 
-    public List<Quest> getQuests() {
+    public List<QuestDto> getQuests() {
         return quests;
     }
 
-    public void setQuests(List<Quest> quests) {
+    public void setQuests(List<QuestDto> quests) {
         this.quests = quests;
     }
 
-    public List<Theme> getThemes() {
+    public List<ThemeDto> getThemes() {
         return themes;
     }
 
-    public void setThemes(List<Theme> themes) {
+    public void setThemes(List<ThemeDto> themes) {
         this.themes = themes;
     }
-
 }

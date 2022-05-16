@@ -1,9 +1,6 @@
 package ru.quest.dto;
 
-import ru.quest.model.Answer;
 import ru.quest.model.Level;
-import ru.quest.model.Link;
-import ru.quest.model.Theme;
 
 import java.util.List;
 import java.util.Objects;
@@ -17,11 +14,11 @@ public class QuestDto {
 
     private Level level;
 
-    private List<Answer> answers;
+    private List<AnswerDto> answers;
 
-    private List<Link> links;
+    private List<LinkDto> links;
 
-    private List<Theme> themes;
+    private List<ThemeDto> themes;
 
     public QuestDto() {
     }
@@ -58,27 +55,27 @@ public class QuestDto {
         this.level = level;
     }
 
-    public List<Answer> getAnswers() {
+    public List<AnswerDto> getAnswers() {
         return answers;
     }
 
-    public void setAnswers(List<Answer> answers) {
+    public void setAnswers(List<AnswerDto> answers) {
         this.answers = answers;
     }
 
-    public List<Link> getLinks() {
+    public List<LinkDto> getLinks() {
         return links;
     }
 
-    public void setLinks(List<Link> links) {
+    public void setLinks(List<LinkDto> links) {
         this.links = links;
     }
 
-    public List<Theme> getThemes() {
+    public List<ThemeDto> getThemes() {
         return themes;
     }
 
-    public void setThemes(List<Theme> themes) {
+    public void setThemes(List<ThemeDto> themes) {
         this.themes = themes;
     }
 
@@ -92,6 +89,6 @@ public class QuestDto {
 
     @Override
     public int hashCode() {
-        return (int) (long) quest_id;
+        return Objects.hash(quest_id, text_quest, comment, level, answers, links, themes);
     }
 }

@@ -42,6 +42,6 @@ public class Theme {
 
     @Override
     public int hashCode() {
-        return (int)(long) theme_id;
+        return Objects.hash(theme_id, theme);
     }
 }

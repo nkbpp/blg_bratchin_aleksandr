@@ -83,7 +83,7 @@ public class Round {
 
     @Override
     public int hashCode() {
-        return (int)(long)round_id;
+        return Objects.hash(round_id, name, index, quests, themes);
     }
 
     public static Builder builder() {

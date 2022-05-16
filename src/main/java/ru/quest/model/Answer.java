@@ -55,7 +55,7 @@ public class Answer {
 
     @Override
     public int hashCode() {
-        return (int)(long)answer_id;
+        return Objects.hash(answer_id, answer, correct_answer);
     }
 
     public static Builder builder() {

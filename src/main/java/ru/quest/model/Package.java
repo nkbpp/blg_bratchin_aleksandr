@@ -84,7 +84,7 @@ public class Package {
 
     @Override
     public int hashCode() {
-        return (int)(long) package_id;
+        return Objects.hash(package_id, name, info, author, rounds);
     }
 
     public static Builder builder() {

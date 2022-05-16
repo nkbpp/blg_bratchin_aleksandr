@@ -42,6 +42,6 @@ public class Link {
 
     @Override
     public int hashCode() {
-        return (int)(long)link_id;
+        return Objects.hash(link_id, link);
     }
 }

@@ -4,8 +4,16 @@ import org.springframework.stereotype.Component;
 import ru.quest.dto.PackageDto;
 import ru.quest.model.Package;
 
+import java.util.stream.Collectors;
+
 @Component
 public class PackageMapper {
+
+    private final RoundMapper roundMapper;
+
+    public PackageMapper(RoundMapper roundMapper) {
+        this.roundMapper = roundMapper;
+    }
 
     public PackageDto toDto(Package aPackage) {
         PackageDto dto = new PackageDto();
@@ -13,7 +21,10 @@ public class PackageMapper {
         dto.setName(aPackage.getName());
         dto.setAuthor(aPackage.getAuthor());
         dto.setInfo(aPackage.getInfo());
-        dto.setRounds(aPackage.getRounds());
+
+        dto.setRounds(aPackage.getRounds().stream()
+                .map(round -> roundMapper.toDto(round))
+                .collect(Collectors.toList()));
 
         return dto;
     }
@@ -24,7 +35,9 @@ public class PackageMapper {
                 .setName(dto.getName())
                 .setAuthor(dto.getAuthor())
                 .setInfo(dto.getInfo())
-                .setRounds(dto.getRounds())
+                .setRounds(dto.getRounds().stream()
+                        .map(round -> roundMapper.fromDto(round))
+                        .collect(Collectors.toList()))
                 .build();
     }
 
