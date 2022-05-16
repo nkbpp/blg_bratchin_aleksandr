@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Package {
 
-    private Long package_id;
+    private Long packageId;
 
     private String name;
 
@@ -15,8 +15,8 @@ public class Package {
 
     private List<Round> rounds;
 
-    public Package(Long package_id, String name, String info, String author, List<Round> rounds) {
-        this.package_id = package_id;
+    public Package(Long packageId, String name, String info, String author, List<Round> rounds) {
+        this.packageId = packageId;
         this.name = name;
         this.info = info;
         this.author = author;
@@ -34,12 +34,12 @@ public class Package {
 
     }
 
-    public Long getPackage_id() {
-        return package_id;
+    public Long getPackageId() {
+        return packageId;
     }
 
-    public void setPackage_id(Long package_id) {
-        this.package_id = package_id;
+    public void setPackageId(Long packageId) {
+        this.packageId = packageId;
     }
 
     public String getName() {
@@ -79,12 +79,12 @@ public class Package {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Package aPackage = (Package) o;
-        return Objects.equals(package_id, aPackage.package_id) && Objects.equals(name, aPackage.name) && Objects.equals(info, aPackage.info) && Objects.equals(author, aPackage.author) && Objects.equals(rounds, aPackage.rounds);
+        return Objects.equals(packageId, aPackage.packageId) && Objects.equals(name, aPackage.name) && Objects.equals(info, aPackage.info) && Objects.equals(author, aPackage.author) && Objects.equals(rounds, aPackage.rounds);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(package_id, name, info, author, rounds);
+        return Objects.hash(packageId, name, info, author, rounds);
     }
 
     public static Builder builder() {
@@ -98,7 +98,7 @@ public class Package {
         }
 
         public Builder setPackage_id(Long paskage_id) {
-            Package.this.package_id = paskage_id;
+            Package.this.packageId = paskage_id;
             return this;
         }
         public Builder setName(String name) {

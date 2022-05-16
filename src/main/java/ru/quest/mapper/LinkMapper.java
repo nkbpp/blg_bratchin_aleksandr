@@ -9,14 +9,14 @@ public class LinkMapper {
 
     public LinkDto toDto(Link link) {
         LinkDto dto = new LinkDto();
-        dto.setLink_id(link.getLink_id());
+        dto.setLinkId(link.getLinkId());
         dto.setLink(link.getLink());
         return dto;
     }
 
     public Link fromDto(LinkDto dto) {
         Link link = new Link();
-        link.setLink_id(link.getLink_id());
+        link.setLinkId(link.getLinkId());
         link.setLink(link.getLink());
         return link;
     }

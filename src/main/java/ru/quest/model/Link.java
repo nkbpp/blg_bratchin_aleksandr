@@ -4,24 +4,24 @@ import java.util.Objects;
 
 public class Link {
 
-    private Long link_id;
+    private Long linkId;
 
     private String link;
 
     public Link() {
     }
 
-    public Link(Long link_id, String link) {
-        this.link_id = link_id;
+    public Link(Long linkId, String link) {
+        this.linkId = linkId;
         this.link = link;
     }
 
-    public Long getLink_id() {
-        return link_id;
+    public Long getLinkId() {
+        return linkId;
     }
 
-    public void setLink_id(Long link_id) {
-        this.link_id = link_id;
+    public void setLinkId(Long linkId) {
+        this.linkId = linkId;
     }
 
     public String getLink() {
@@ -37,11 +37,11 @@ public class Link {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Link link1 = (Link) o;
-        return Objects.equals(link_id, link1.link_id) && Objects.equals(link, link1.link);
+        return Objects.equals(linkId, link1.linkId) && Objects.equals(link, link1.link);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(link_id, link);
+        return Objects.hash(linkId, link);
     }
 }

@@ -19,7 +19,7 @@ public class RoundMapper {
 
     public RoundDto toDto(Round round) {
         RoundDto dto = new RoundDto();
-        dto.setRound_id(round.getRound_id());
+        dto.setRoundId(round.getRoundId());
         dto.setName(round.getName());
         dto.setIndex(round.getIndex());
 
@@ -36,7 +36,7 @@ public class RoundMapper {
 
     public Round fromDto(RoundDto dto) {
         return Round.builder()
-                .setRound_id(dto.getRound_id())
+                .setRound_id(dto.getRoundId())
                 .setName(dto.getName())
                 .setIndex(dto.getIndex())
                 .setQuests(dto.getQuests().stream()

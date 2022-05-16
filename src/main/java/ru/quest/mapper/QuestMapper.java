@@ -22,7 +22,7 @@ public class QuestMapper {
 
     public QuestDto toDto(Quest quest) {
         QuestDto dto = new QuestDto();
-        dto.setQuest_id(quest.getQuestId());
+        dto.setQuestId(quest.getQuestId());
         dto.setText_quest(quest.getTextQuest());
         dto.setComment(quest.getComment());
         dto.setLevel(quest.getLevel());
@@ -44,7 +44,7 @@ public class QuestMapper {
 
     public Quest fromDto(QuestDto dto) {
         return Quest.builder()
-                .setQuestId(dto.getQuest_id())
+                .setQuestId(dto.getQuestId())
                 .setTextQuest(dto.getText_quest())
                 .setComment(dto.getComment())
                 .setLevel(dto.getLevel())

@@ -4,24 +4,24 @@ import java.util.Objects;
 
 public class Theme {
 
-    private Long theme_id;
+    private Long themeId;
 
     private String theme;
 
     public Theme() {
     }
 
-    public Theme(Long theme_id, String theme) {
-        this.theme_id = theme_id;
+    public Theme(Long themeId, String theme) {
+        this.themeId = themeId;
         this.theme = theme;
     }
 
-    public Long getTheme_id() {
-        return theme_id;
+    public Long getThemeId() {
+        return themeId;
     }
 
-    public void setTheme_id(Long theme_id) {
-        this.theme_id = theme_id;
+    public void setThemeId(Long themeId) {
+        this.themeId = themeId;
     }
 
     public String getTheme() {
@@ -37,11 +37,11 @@ public class Theme {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Theme theme1 = (Theme) o;
-        return Objects.equals(theme_id, theme1.theme_id) && Objects.equals(theme, theme1.theme);
+        return Objects.equals(themeId, theme1.themeId) && Objects.equals(theme, theme1.theme);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(theme_id, theme);
+        return Objects.hash(themeId, theme);
     }
 }

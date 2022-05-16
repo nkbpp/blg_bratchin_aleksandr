@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class QuestDto {
-    private Long quest_id;
+    private Long questId;
 
     private String text_quest;
 
@@ -23,12 +23,12 @@ public class QuestDto {
     public QuestDto() {
     }
 
-    public Long getQuest_id() {
-        return quest_id;
+    public Long getQuestId() {
+        return questId;
     }
 
-    public void setQuest_id(Long quest_id) {
-        this.quest_id = quest_id;
+    public void setQuestId(Long questId) {
+        this.questId = questId;
     }
 
     public String getText_quest() {
@@ -84,11 +84,11 @@ public class QuestDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         QuestDto questDto = (QuestDto) o;
-        return Objects.equals(quest_id, questDto.quest_id) && Objects.equals(text_quest, questDto.text_quest) && Objects.equals(comment, questDto.comment) && level == questDto.level && Objects.equals(answers, questDto.answers) && Objects.equals(links, questDto.links) && Objects.equals(themes, questDto.themes);
+        return Objects.equals(questId, questDto.questId) && Objects.equals(text_quest, questDto.text_quest) && Objects.equals(comment, questDto.comment) && level == questDto.level && Objects.equals(answers, questDto.answers) && Objects.equals(links, questDto.links) && Objects.equals(themes, questDto.themes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(quest_id, text_quest, comment, level, answers, links, themes);
+        return Objects.hash(questId, text_quest, comment, level, answers, links, themes);
     }
 }

@@ -4,7 +4,7 @@ import java.util.List;
 
 public class PackageDto {
 
-    private Long package_id;
+    private Long packageId;
 
     private String name;
 
@@ -17,12 +17,12 @@ public class PackageDto {
     public PackageDto() {
     }
 
-    public Long getPackage_id() {
-        return package_id;
+    public Long getPackageId() {
+        return packageId;
     }
 
-    public void setPackage_id(Long package_id) {
-        this.package_id = package_id;
+    public void setPackageId(Long packageId) {
+        this.packageId = packageId;
     }
 
     public String getName() {

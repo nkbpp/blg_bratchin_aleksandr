@@ -1,13 +1,10 @@
 package ru.quest.dto;
 
-import ru.quest.model.Quest;
-import ru.quest.model.Theme;
-
 import java.util.List;
 
 public class RoundDto {
 
-    private Long round_id;
+    private Long roundId;
 
     private String name;
 
@@ -20,12 +17,12 @@ public class RoundDto {
     public RoundDto() {
     }
 
-    public Long getRound_id() {
-        return round_id;
+    public Long getRoundId() {
+        return roundId;
     }
 
-    public void setRound_id(Long round_id) {
-        this.round_id = round_id;
+    public void setRoundId(Long roundId) {
+        this.roundId = roundId;
     }
 
     public String getName() {

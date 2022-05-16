@@ -2,19 +2,19 @@ package ru.quest.dto;
 
 public class ThemeDto {
 
-    private Long theme_id;
+    private Long themeId;
 
     private String theme;
 
     public ThemeDto() {
     }
 
-    public Long getTheme_id() {
-        return theme_id;
+    public Long getThemeId() {
+        return themeId;
     }
 
-    public void setTheme_id(Long theme_id) {
-        this.theme_id = theme_id;
+    public void setThemeId(Long themeId) {
+        this.themeId = themeId;
     }
 
     public String getTheme() {

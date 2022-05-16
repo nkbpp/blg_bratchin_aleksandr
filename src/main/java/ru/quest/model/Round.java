@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Round {
 
-    private Long round_id;
+    private Long roundId;
 
     private String name;
 
@@ -18,8 +18,8 @@ public class Round {
     public Round() {
     }
 
-    public Round(Long round_id, String name, Integer index, List<Quest> quests, List<Theme> themes) {
-        this.round_id = round_id;
+    public Round(Long roundId, String name, Integer index, List<Quest> quests, List<Theme> themes) {
+        this.roundId = roundId;
         this.name = name;
         this.index = index;
         this.quests = quests;
@@ -33,12 +33,12 @@ public class Round {
         this.themes = themes;
     }
 
-    public Long getRound_id() {
-        return round_id;
+    public Long getRoundId() {
+        return roundId;
     }
 
-    public void setRound_id(Long round_id) {
-        this.round_id = round_id;
+    public void setRoundId(Long roundId) {
+        this.roundId = roundId;
     }
 
     public String getName() {
@@ -78,12 +78,12 @@ public class Round {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Round round = (Round) o;
-        return Objects.equals(round_id, round.round_id) && Objects.equals(name, round.name) && Objects.equals(index, round.index) && Objects.equals(quests, round.quests) && Objects.equals(themes, round.themes);
+        return Objects.equals(roundId, round.roundId) && Objects.equals(name, round.name) && Objects.equals(index, round.index) && Objects.equals(quests, round.quests) && Objects.equals(themes, round.themes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(round_id, name, index, quests, themes);
+        return Objects.hash(roundId, name, index, quests, themes);
     }
 
     public static Builder builder() {
@@ -97,7 +97,7 @@ public class Round {
         }
 
         public Builder setRound_id(Long round_id) {
-            Round.this.round_id = round_id;
+            Round.this.roundId = round_id;
             return this;
         }
         public Builder setName(String name) {

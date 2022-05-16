@@ -17,7 +17,7 @@ public class PackageMapper {
 
     public PackageDto toDto(Package aPackage) {
         PackageDto dto = new PackageDto();
-        dto.setPackage_id(aPackage.getPackage_id());
+        dto.setPackageId(aPackage.getPackageId());
         dto.setName(aPackage.getName());
         dto.setAuthor(aPackage.getAuthor());
         dto.setInfo(aPackage.getInfo());
@@ -31,7 +31,7 @@ public class PackageMapper {
 
     public Package fromDto(PackageDto dto) {
         return Package.builder()
-                .setPackage_id(dto.getPackage_id())
+                .setPackage_id(dto.getPackageId())
                 .setName(dto.getName())
                 .setAuthor(dto.getAuthor())
                 .setInfo(dto.getInfo())

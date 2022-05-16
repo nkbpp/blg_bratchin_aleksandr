@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class Answer {
 
-    private Long answer_id;
+    private Long answerId;
 
     private String answer;
 
@@ -14,19 +14,19 @@ public class Answer {
     public Answer() {
     }
 
-    public Answer(Long answer_id, String answer, Boolean correct_answer) {
-        this.answer_id = answer_id;
+    public Answer(Long answerId, String answer, Boolean correct_answer) {
+        this.answerId = answerId;
         this.answer = answer;
         this.correct_answer = correct_answer;
 
     }
 
-    public Long getAnswer_id() {
-        return answer_id;
+    public Long getAnswerId() {
+        return answerId;
     }
 
-    public void setAnswer_id(Long answer_id) {
-        this.answer_id = answer_id;
+    public void setAnswerId(Long answerId) {
+        this.answerId = answerId;
     }
 
     public String getAnswer() {
@@ -50,12 +50,12 @@ public class Answer {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Answer answer1 = (Answer) o;
-        return Objects.equals(answer_id, answer1.answer_id) && Objects.equals(answer, answer1.answer) && Objects.equals(correct_answer, answer1.correct_answer);
+        return Objects.equals(answerId, answer1.answerId) && Objects.equals(answer, answer1.answer) && Objects.equals(correct_answer, answer1.correct_answer);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(answer_id, answer, correct_answer);
+        return Objects.hash(answerId, answer, correct_answer);
     }
 
     public static Builder builder() {
@@ -67,14 +67,17 @@ public class Answer {
         private Builder() {
             // private constructor
         }
+
         public Builder setAnswer_id(Long answer_id) {
-            Answer.this.answer_id = answer_id;
+            Answer.this.answerId = answer_id;
             return this;
         }
+
         public Builder setAnswer(String answer) {
             Answer.this.answer = answer;
             return this;
         }
+
         public Builder setCorrect_answer(Boolean correct_answer) {
             Answer.this.correct_answer = correct_answer;
             return this;

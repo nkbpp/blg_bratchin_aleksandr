@@ -41,7 +41,7 @@ public class QuestService {
                                 .stream()
                                 .anyMatch(
                                         theme -> themeIds.stream()
-                                                .anyMatch(aLong -> aLong.equals(theme.getTheme_id()))
+                                                .anyMatch(aLong -> aLong.equals(theme.getThemeId()))
                                 )
                 )
                 .collect(Collectors.toList());

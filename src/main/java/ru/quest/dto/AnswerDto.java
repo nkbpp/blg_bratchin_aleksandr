@@ -2,7 +2,7 @@ package ru.quest.dto;
 
 public class AnswerDto {
 
-    private Long answer_id;
+    private Long answerId;
 
     private String answer;
 
@@ -11,12 +11,12 @@ public class AnswerDto {
     public AnswerDto() {
     }
 
-    public Long getAnswer_id() {
-        return answer_id;
+    public Long getAnswerId() {
+        return answerId;
     }
 
-    public void setAnswer_id(Long answer_id) {
-        this.answer_id = answer_id;
+    public void setAnswerId(Long answerId) {
+        this.answerId = answerId;
     }
 
     public String getAnswer() {
