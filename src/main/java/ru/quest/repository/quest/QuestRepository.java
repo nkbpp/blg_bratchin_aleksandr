@@ -1,6 +1,10 @@
-package ru.quest.repository;
+package ru.quest.repository.quest;
 
 import ru.quest.model.*;
+import ru.quest.model.level.Level;
+import ru.quest.model.quest.Quest;
+import ru.quest.repository.Repository;
+import ru.quest.repository.Specification;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @org.springframework.stereotype.Repository
-public class QuestRepository implements Repository<Quest>{
+public class QuestRepository implements Repository<Quest> {
 
     private List<Quest> quests;
     private long answersId = 0;

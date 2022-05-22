@@ -5,13 +5,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
-import ru.quest.dto.QuestDto;
+import ru.quest.dto.quest.QuestDto;
 import ru.quest.dto.RoundsDto;
 import ru.quest.mapper.QuestMapper;
-import ru.quest.model.Level;
-import ru.quest.model.Quest;
+import ru.quest.model.level.Level;
+import ru.quest.model.quest.Quest;
 import ru.quest.model.Round;
-import ru.quest.service.QuestService;
+import ru.quest.service.quest.QuestService;
 import ru.quest.service.RoundService;
 
 import java.util.List;

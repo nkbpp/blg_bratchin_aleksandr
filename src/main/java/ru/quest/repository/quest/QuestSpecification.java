@@ -1,8 +1,9 @@
-package ru.quest.repository;
+package ru.quest.repository.quest;
 
-import ru.quest.model.Quest;
+import ru.quest.model.quest.Quest;
+import ru.quest.repository.Specification;
 
-public class QuestSpecification implements Specification<Quest>{
+public class QuestSpecification implements Specification<Quest> {
 
     private final Long id;
 

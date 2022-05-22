@@ -11,7 +11,7 @@ public class AnswerMapper {
         AnswerDto dto = new AnswerDto();
         dto.setAnswerId(answer.getAnswerId());
         dto.setAnswer(answer.getAnswer());
-        dto.setCorrect_answer(answer.getCorrect_answer());
+        dto.setCorrectAnswer(answer.getCorrectAnswer());
         return dto;
     }
 
@@ -19,7 +19,7 @@ public class AnswerMapper {
         return Answer.builder()
                 .setAnswer_id(dto.getAnswerId())
                 .setAnswer(dto.getAnswer())
-                .setCorrect_answer(dto.getCorrect_answer())
+                .setCorrect_answer(dto.getCorrectAnswer())
                 .build();
     }
 

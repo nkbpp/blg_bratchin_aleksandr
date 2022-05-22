@@ -1,12 +1,20 @@
 package ru.quest.dto;
 
+import org.hibernate.validator.constraints.Range;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 public class AnswerDto {
 
+    @NotNull(message = "answerId cannot be null")
+    @Range(min=1, message
+            = "answerId must be greater than 1")
     private Long answerId;
-
+    @NotBlank(message = "Answer cannot be blank")
     private String answer;
-
-    private Boolean correct_answer;
+    @NotNull(message = "Must be set")
+    private Boolean correctAnswer;
 
     public AnswerDto() {
     }
@@ -27,12 +35,12 @@ public class AnswerDto {
         this.answer = answer;
     }
 
-    public Boolean getCorrect_answer() {
-        return correct_answer;
+    public Boolean getCorrectAnswer() {
+        return correctAnswer;
     }
 
-    public void setCorrect_answer(Boolean correct_answer) {
-        this.correct_answer = correct_answer;
+    public void setCorrectAnswer(Boolean correctAnswer) {
+        this.correctAnswer = correctAnswer;
     }
 
 }

@@ -1,11 +1,11 @@
-package ru.quest.service;
+package ru.quest.service.quest;
 
 import org.springframework.stereotype.Service;
 import ru.quest.exeptions.NotFoundException;
-import ru.quest.model.Level;
-import ru.quest.model.Quest;
-import ru.quest.repository.QuestRepository;
-import ru.quest.repository.QuestSpecification;
+import ru.quest.model.level.Level;
+import ru.quest.model.quest.Quest;
+import ru.quest.repository.quest.QuestRepository;
+import ru.quest.repository.quest.QuestSpecification;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,7 +33,7 @@ public class QuestService {
                 .filter(quest -> answer == null ||
                         quest.getAnswers()
                                 .stream()
-                                .anyMatch(answer1 ->  answer1.getAnswer().equals(answer) && answer1.getCorrect_answer())
+                                .anyMatch(answer1 ->  answer1.getAnswer().equals(answer) && answer1.getCorrectAnswer())
                 )
                 .filter(quest -> level == null || level.equals(quest.getLevel()))
                 .filter(quest -> themeIds == null ||

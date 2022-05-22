@@ -1,9 +1,16 @@
 package ru.quest.dto;
 
+import org.hibernate.validator.constraints.Range;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 public class LinkDto {
-
+    @NotNull(message = "linkId cannot be null")
+    @Range(min=1, message
+            = "linkId must be greater than 1")
     private Long linkId;
-
+    @NotBlank(message = "Link cannot be blank")
     private String link;
 
     public LinkDto() {

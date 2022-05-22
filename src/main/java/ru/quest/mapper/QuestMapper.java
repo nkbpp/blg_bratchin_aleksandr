@@ -1,8 +1,8 @@
 package ru.quest.mapper;
 
 import org.springframework.stereotype.Component;
-import ru.quest.dto.QuestDto;
-import ru.quest.model.Quest;
+import ru.quest.dto.quest.QuestDto;
+import ru.quest.model.quest.Quest;
 
 import java.util.stream.Collectors;
 
@@ -23,7 +23,7 @@ public class QuestMapper {
     public QuestDto toDto(Quest quest) {
         QuestDto dto = new QuestDto();
         dto.setQuestId(quest.getQuestId());
-        dto.setText_quest(quest.getTextQuest());
+        dto.setTextQuest(quest.getTextQuest());
         dto.setComment(quest.getComment());
         dto.setLevel(quest.getLevel());
 
@@ -45,7 +45,7 @@ public class QuestMapper {
     public Quest fromDto(QuestDto dto) {
         return Quest.builder()
                 .setQuestId(dto.getQuestId())
-                .setTextQuest(dto.getText_quest())
+                .setTextQuest(dto.getTextQuest())
                 .setComment(dto.getComment())
                 .setLevel(dto.getLevel())
                 .setAnswers(dto.getAnswers().stream()

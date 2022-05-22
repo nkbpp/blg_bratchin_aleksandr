@@ -2,8 +2,9 @@ package ru.quest.service;
 
 import org.springframework.stereotype.Service;
 import ru.quest.dto.RoundsDto;
-import ru.quest.model.Quest;
+import ru.quest.model.quest.Quest;
 import ru.quest.model.Round;
+import ru.quest.service.quest.QuestService;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,23 +1,29 @@
 package ru.quest.model;
 
+import org.hibernate.validator.constraints.Range;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 public class Answer {
-
+    @NotNull(message = "answerId cannot be null")
+    @Range(min=1, message
+            = "answerId must be greater than 1")
     private Long answerId;
-
+    @NotBlank(message = "Answer cannot be blank")
     private String answer;
-
-    private Boolean correct_answer;
+    @NotNull(message = "Must be set")
+    private Boolean correctAnswer;
 
 
     public Answer() {
     }
 
-    public Answer(Long answerId, String answer, Boolean correct_answer) {
+    public Answer(Long answerId, String answer, Boolean correctAnswer) {
         this.answerId = answerId;
         this.answer = answer;
-        this.correct_answer = correct_answer;
+        this.correctAnswer = correctAnswer;
 
     }
 
@@ -37,12 +43,12 @@ public class Answer {
         this.answer = answer;
     }
 
-    public Boolean getCorrect_answer() {
-        return correct_answer;
+    public Boolean getCorrectAnswer() {
+        return correctAnswer;
     }
 
-    public void setCorrect_answer(Boolean correct_answer) {
-        this.correct_answer = correct_answer;
+    public void setCorrectAnswer(Boolean correctAnswer) {
+        this.correctAnswer = correctAnswer;
     }
 
     @Override
@@ -50,12 +56,12 @@ public class Answer {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Answer answer1 = (Answer) o;
-        return Objects.equals(answerId, answer1.answerId) && Objects.equals(answer, answer1.answer) && Objects.equals(correct_answer, answer1.correct_answer);
+        return Objects.equals(answerId, answer1.answerId) && Objects.equals(answer, answer1.answer) && Objects.equals(correctAnswer, answer1.correctAnswer);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(answerId, answer, correct_answer);
+        return Objects.hash(answerId, answer, correctAnswer);
     }
 
     public static Builder builder() {
@@ -79,7 +85,7 @@ public class Answer {
         }
 
         public Builder setCorrect_answer(Boolean correct_answer) {
-            Answer.this.correct_answer = correct_answer;
+            Answer.this.correctAnswer = correct_answer;
             return this;
         }
 

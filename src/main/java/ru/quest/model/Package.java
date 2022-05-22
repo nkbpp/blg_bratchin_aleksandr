@@ -1,10 +1,16 @@
 package ru.quest.model;
 
+import org.hibernate.validator.constraints.Range;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Objects;
 
 public class Package {
-
+    @NotNull(message = "packageId cannot be null")
+    @Range(min=1, message
+            = "packageId must be greater than 1")
     private Long packageId;
 
     private String name;
@@ -12,7 +18,8 @@ public class Package {
     private String info;
 
     private String author;
-
+    @Size(min = 1, message = "Rounds list cannot be empty")
+    @NotNull(message = "Rounds cannot be null")
     private List<Round> rounds;
 
     public Package(Long packageId, String name, String info, String author, List<Round> rounds) {

@@ -1,23 +1,40 @@
-package ru.quest.model;
+package ru.quest.model.quest;
 
+import org.hibernate.validator.constraints.Range;
+import ru.quest.dto.quest.CorrectAnswerDtoExists;
+import ru.quest.model.Answer;
+import ru.quest.model.Link;
+import ru.quest.model.Theme;
+import ru.quest.model.level.Level;
+import ru.quest.model.level.LevelTypeSubset;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Objects;
 
 public class Quest {
-
+    @NotNull(message = "questId cannot be null")
+    @Range(min=1, message
+            = "questId must be greater than 1")
     private Long questId;
-
+    @NotBlank(message = "Text quest cannot be blank")
     private String textQuest;
 
     private String comment;
-
+    @NotNull(message = "level cannot be null")
+    @LevelTypeSubset(anyOf = {Level.EASY, Level.MEDIUM, Level.HARD})
     private Level level;
+    @Size(min = 1, message = "Answers list cannot be empty.")
+    @NotNull(message = "answers cannot be null")
+    @CorrectAnswerExists
+    private List<@Valid Answer> answers;
 
-    private List<Answer> answers;
+    private List<@Valid Link> links;
 
-    private List<Link> links;
-
-    private List<Theme> themes;
+    private List<@Valid Theme> themes;
 
     public Quest() {
     }

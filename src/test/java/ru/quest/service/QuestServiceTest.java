@@ -1,9 +1,10 @@
 package ru.quest.service;
 
 import org.junit.jupiter.api.Test;
-import ru.quest.model.Level;
-import ru.quest.model.Quest;
-import ru.quest.repository.QuestRepository;
+import ru.quest.model.level.Level;
+import ru.quest.model.quest.Quest;
+import ru.quest.repository.quest.QuestRepository;
+import ru.quest.service.quest.QuestService;
 
 import java.util.List;
 

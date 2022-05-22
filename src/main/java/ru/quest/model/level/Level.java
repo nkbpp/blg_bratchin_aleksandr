@@ -1,4 +1,4 @@
-package ru.quest.model;
+package ru.quest.model.level;
 
 public enum Level {
     EASY("Простой"),

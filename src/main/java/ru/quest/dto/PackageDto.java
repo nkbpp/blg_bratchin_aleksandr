@@ -1,9 +1,16 @@
 package ru.quest.dto;
 
+import org.hibernate.validator.constraints.Range;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 public class PackageDto {
-
+    @NotNull(message = "packageId cannot be null")
+    @Range(min=1, message
+            = "packageId must be greater than 1")
     private Long packageId;
 
     private String name;
@@ -11,8 +18,9 @@ public class PackageDto {
     private String info;
 
     private String author;
-
-    private List<RoundDto> rounds;
+    @Size(min = 1, message = "Rounds list cannot be empty")
+    @NotNull(message = "Rounds cannot be null")
+    private List<@Valid RoundDto> rounds;
 
     public PackageDto() {
     }

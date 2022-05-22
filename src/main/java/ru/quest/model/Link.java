@@ -1,11 +1,17 @@
 package ru.quest.model;
 
+import org.hibernate.validator.constraints.Range;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 public class Link {
-
+    @NotNull(message = "linkId cannot be null")
+    @Range(min=1, message
+            = "linkId must be greater than 1")
     private Long linkId;
-
+    @NotBlank(message = "Link cannot be blank")
     private String link;
 
     public Link() {
